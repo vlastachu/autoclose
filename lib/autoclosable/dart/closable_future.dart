@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:async/async.dart';
 import 'package:autoclose/autoclosable/autoclosable.dart';
-import 'package:autoclose/closer/closer.dart';
+import 'package:autoclose/closer/has_closer.dart';
 
-class ClosableFuture<T> implements AutoClosable {
+class ClosableFuture<T> extends AutoClosable<Future<T>> {
   final CancelableOperation<T> cancelableOperation;
 
-  ClosableFuture(Future<T> future)
-      : cancelableOperation = CancelableOperation<T>.fromFuture(future);
+  ClosableFuture(Future<T> future, {void Function()? doOnClose})
+      : cancelableOperation = CancelableOperation<T>.fromFuture(future), super(future, doOnClose);
 
   @override
   Future<void> close() {
@@ -21,9 +21,9 @@ class ClosableFuture<T> implements AutoClosable {
 }
 
 extension FutureClose<T> on Future<T> {
-  Future<T> closeWith(Closer closer) {
-    final closable = ClosableFuture(this);
-    closer.addClosable(closable);
+  Future<T> closeWith(HasCloser hasCloser, {void Function()? doOnClose}) {
+    final closable = ClosableFuture(this, doOnClose: doOnClose);
+    hasCloser.closer.addClosable(closable);
     return closable.cancelableOperation.value;
   }
 }

@@ -1,0 +1,19 @@
+name: autoclose_bloc
+description: A starting point for Dart libraries or applications.
+version: 1.0.0
+# repository: https://github.com/my_org/my_repo
+
+environment:
+  sdk: '>=2.19.3 <3.0.0'
+
+dependencies:
+  bloc: ^8.1.2
+  autoclose:
+
+dependency_overrides:
+  autoclose:
+    path: ../..
+
+dev_dependencies:
+  lints: ^2.0.0
+  test: ^1.21.0

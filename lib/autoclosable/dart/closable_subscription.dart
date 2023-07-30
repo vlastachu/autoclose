@@ -1,0 +1,22 @@
+import 'dart:async';
+
+import 'package:autoclose/autoclosable/autoclosable.dart';
+import 'package:autoclose/closer/has_closer.dart';
+
+class ClosableSubscription extends AutoClosable<StreamSubscription> {
+  ClosableSubscription(super.closable, super.onClose);
+
+  @override
+  Future<void> close() {
+    return closable.cancel();
+  }
+
+  @override
+  bool? get isClosed => null;
+}
+
+extension SubscriptionClose on StreamSubscription {
+  void closeWith(HasCloser hasCloser, {void Function()? doOnClose}) {
+    hasCloser.closer.addClosable(ClosableSubscription(this, doOnClose));
+  }
+}

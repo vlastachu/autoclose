@@ -1,13 +1,14 @@
-name: autoclose
+name: autoclose_mobx
 description: A starting point for Dart libraries or applications.
 version: 1.0.0
-repository: https://github.com/vlastachu/autoclose
+# repository: https://github.com/my_org/my_repo
 
 environment:
-  sdk: '>=3.0.0'
+  sdk: '>=2.19.3 <3.0.0'
+
+# dependencies:
+#   path: ^1.8.0
 
 dev_dependencies:
   lints: ^2.0.0
   test: ^1.21.0
-dependencies:
-  async: ^2.11.0
