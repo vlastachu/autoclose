@@ -22,7 +22,7 @@ class GeneralCloser implements Closer {
         _callCloser(closable);
       }
       final wasRemoved = attachedAutoclosables.remove(closable);
-      assert(!wasRemoved);
+      assert(wasRemoved);
     }
     closables.clear();
   }
