@@ -1,15 +1,5 @@
-import 'package:autoclose/autoclose.dart';
-import 'package:test/test.dart';
+import 'autoclosable/closable_subscription.dart';
 
 void main() {
-  group('A group of tests', () {
-
-    setUp(() {
-      // Additional setup goes here.
-    });
-
-    test('First Test', () {
-      // expect(awesome.isAwesome, isTrue);
-    });
-  });
+  testClosableSubscription();
 }

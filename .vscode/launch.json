@@ -1,0 +1,52 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "autoclose test",
+            "request": "launch",
+            "program": "test/autoclose_test.dart",
+            "type": "dart"
+        },
+        {
+            "name": "autoclose_bloc",
+            "cwd": "packages/autoclose_bloc",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "autoclose_flutter",
+            "cwd": "packages/autoclose_flutter",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "autoclose_flutter (profile mode)",
+            "cwd": "packages/autoclose_flutter",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "autoclose_flutter (release mode)",
+            "cwd": "packages/autoclose_flutter",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "autoclose_mobx",
+            "cwd": "packages/autoclose_mobx",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "autoclose_riverpod",
+            "cwd": "packages/autoclose_riverpod",
+            "request": "launch",
+            "type": "dart"
+        }
+    ]
+}
