@@ -36,7 +36,7 @@ void testClosableTimer() {
       globalWeakReference = closerWeakRef;
       // expect(streamController.hasListener, isTrue);
 
-      // let's check the adequacy of our test: the reference to our closук object
+      // let's check the adequacy of our test: the reference to our closer object
       // should not be cleared, as it was captured by the subscription
       // which expect to call **this**.doAnything() when event come to stream (actually never)
       // await forceGC();

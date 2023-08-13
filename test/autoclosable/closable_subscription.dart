@@ -44,7 +44,7 @@ void testClosableSubscription() {
     test('closer.close remove all references by subcription', () async {
       final closerWeakRef = SubscriptionTestCloser.createAndInit(stream);
       
-      // let's check the adequacy of our test: the reference to our closук object
+      // let's check the adequacy of our test: the reference to our closer object
       // should not be cleared, as it was captured by the subscription
       // which expect to call **this**.doAnything() when event come to stream (actually never)
       await forceGC();
