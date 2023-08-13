@@ -1,5 +1,5 @@
 import 'autoclosable/closable_subscription.dart';
 
-void main() {
+void main() async {
   testClosableSubscription();
 }
