@@ -7,10 +7,10 @@ abstract class AutoClosable<T> {
   final void Function()? onClose;
 
   AutoClosable(this.closable, this.onClose);
+
   /// Closes the current instance.
   /// The returned future completes when the instance has been closed.
   FutureOr<void> close();
-
 
   /// Whether the object is already closed.
   /// null means you can't extract such information
@@ -18,8 +18,9 @@ abstract class AutoClosable<T> {
   bool? get isClosed;
 
   @override
-  bool operator==(dynamic other) => closable == other;
-  
+  bool operator ==(dynamic other) =>
+      other is AutoClosable && closable == other.closable;
+
   @override
   int get hashCode => closable.hashCode;
 }
