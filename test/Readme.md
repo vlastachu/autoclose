@@ -1,4 +1,4 @@
-There is initial design of test, which was failed every time because my refernce keeped by GC root 
+There is initial design of test, which was failed every time because my reference keeped by GC root 
 (local variable or static class fields). I have no idea why.
 
 ```dart

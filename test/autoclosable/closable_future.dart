@@ -1,6 +1,5 @@
-import 'dart:async';
 
-import 'package:autoclose/autoclosable/dart/closable_timer.dart';
+import 'package:autoclose/autoclosable/dart/closable_future.dart';
 import 'package:leak_tracker/leak_tracker.dart';
 import 'package:test/test.dart';
 
@@ -8,35 +7,37 @@ import '../utils/test_closer.dart';
 
 final List<WeakReference> refsThatShouldBeCleared = [];
 
-class TimerTestCloser extends TestCloser {
-  late WeakReference<Timer> timerWeakRef;
-  TimerTestCloser();
+class FutureTestCloser extends TestCloser {
+  late WeakReference<Future<dynamic>> futureWeakRef;
+  FutureTestCloser();
 
   // method to just catch reference on `this`
   void doAnything() {}
 
-  Timer init() {
-    return Timer(Duration(hours: 1), doAnything)..closeWith(this);
+  Future<dynamic> init() async {
+    final someValue = await Future.delayed(Duration(hours: 1)).closeWith(this);
+    doAnything();
+    return someValue;
   }
 
-  static WeakReference<TimerTestCloser> createAndInit() {
+  static WeakReference<FutureTestCloser> createAndInit() {
     // function used to not hold the hard link to closer
-    final closer = TimerTestCloser();
-    closer.timerWeakRef = WeakReference(closer.init());
+    final closer = FutureTestCloser();
+    closer.futureWeakRef = WeakReference(closer.init());
     closer.close();
     return WeakReference(closer);
   }
 }
 
-void testClosableTimer() {
-  group('ClosableTimer', () {
+void testClosableFuture() {
+  group('ClosableFuture', () {
     test('closer.close remove all references by subcription', () async {
-      final closerWeakRef = TimerTestCloser.createAndInit();
+      final closerWeakRef = FutureTestCloser.createAndInit();
       refsThatShouldBeCleared.add(closerWeakRef);
 
       closerWeakRef.target?.close();
       await forceGC();
-      expect(closerWeakRef.target?.timerWeakRef.target, isNull);
+      expect(closerWeakRef.target?.futureWeakRef.target, isNull);
     });
     test('closer ref was closed after previos test closure closed', () async {
       await forceGC();

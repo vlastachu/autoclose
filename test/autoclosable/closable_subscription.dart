@@ -33,7 +33,7 @@ class SubscriptionTestCloser extends TestCloser {
 
 void testClosableSubscription() {
   group('ClosableSubscription', () {
-    test('GC cleanes weak refernce which not holded by anyone', () async {
+    test('GC cleanes weak reference which not holded by anyone', () async {
       final closerWeakRef = WeakReference(SubscriptionTestCloser());
       await forceGC();
       expect(streamController.hasListener, isFalse);
