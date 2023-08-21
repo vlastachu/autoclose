@@ -9,3 +9,4 @@ export 'autoclosable/dart/closable_subscription.dart';
 export 'closer/has_closer.dart';
 export 'closer/closer.dart';
 export 'closer/general_closer.dart';
+export 'test_utils/test_closer.dart';

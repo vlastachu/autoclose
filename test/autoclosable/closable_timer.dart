@@ -1,49 +1,46 @@
+
 import 'dart:async';
 
 import 'package:autoclose/autoclosable/dart/closable_timer.dart';
-import 'package:leak_tracker/leak_tracker.dart';
+import 'package:autoclose/test_utils/test_closer.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
-import '../utils/test_closer.dart';
-
-final List<WeakReference> refsThatShouldBeCleared = [];
-
-class TimerTestCloser extends TestCloser {
-  late WeakReference<Timer> timerWeakRef;
-  TimerTestCloser();
-
-  // method to just catch reference on `this`
-  void doAnything() {}
-
-  Timer init() {
-    return Timer(Duration(hours: 1), doAnything)..closeWith(this);
-  }
-
-  static WeakReference<TimerTestCloser> createAndInit() {
-    // function used to not hold the hard link to closer
-    final closer = TimerTestCloser();
-    closer.timerWeakRef = WeakReference(closer.init());
-    closer.close();
-    return WeakReference(closer);
-  }
-}
+@GenerateNiceMocks([MockSpec<Timer>()])
+import 'closable_timer.mocks.dart';
 
 void testClosableTimer() {
   group('ClosableTimer', () {
-    test('closer.close remove all references by subcription', () async {
-      final closerWeakRef = TimerTestCloser.createAndInit();
-      refsThatShouldBeCleared.add(closerWeakRef);
-
-      closerWeakRef.target?.close();
-      await forceGC();
-      expect(closerWeakRef.target?.timerWeakRef.target, isNull);
+    test('closer.close calls `cancel`', () async {
+      final closer = TestCloser();
+      final timer = MockTimer();
+      when(timer.isActive).thenReturn(true);
+      
+      timer.closeWith(closer);
+      closer.close();
+      verify(timer.cancel()).called(1);
     });
-    test('closer ref was closed after previos test closure closed', () async {
-      await forceGC();
-      expect(refsThatShouldBeCleared, isNotEmpty);
-      for (final ref in refsThatShouldBeCleared) {
-        expect(ref.target, isNull);
-      }
+    test('closer.close doesn\'t call `cancel` on closed timer', () async {
+      final closer = TestCloser();
+      final timer = MockTimer();
+      when(timer.isActive).thenReturn(false);
+      
+      timer.closeWith(closer);
+      closer.close();
+      verifyNever(timer.cancel());
+    });
+    test('multiple closer.close calls `cancel` once', () async {
+      final closer1 = TestCloser();
+      final closer2 = TestCloser();
+      final timer = MockTimer();
+      when(timer.isActive).thenReturn(true);
+      
+      timer.closeWith(closer1);
+      timer.closeWith(closer2);
+      closer1.close();
+      closer2.close();
+      verify(timer.cancel()).called(1);
     });
   });
 }
