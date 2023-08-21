@@ -2,9 +2,7 @@ import 'dart:developer';
 import 'dart:isolate';
 import 'package:vm_service/vm_service_io.dart';
 
-
 Future<void> forceGC() async {
-
   final serverUri = (await Service.getInfo()).serverUri;
 
   if (serverUri == null) {

@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:autoclose/autoclosable/dart/closable_future.dart';
@@ -23,8 +22,9 @@ void testClosableFuture() {
         await Future.delayed(Duration(milliseconds: 1)).closeWith(closer);
         mocked.someMethod();
       }
+
       future();
-      
+
       await untilCalled(mocked.someMethod());
       verify(mocked.someMethod()).called(1);
       expect(() {
@@ -38,6 +38,7 @@ void testClosableFuture() {
         await Future.delayed(Duration(milliseconds: 1)).closeWith(closer);
         mocked.someMethod();
       }
+
       future();
       closer.close();
       // TODO bad design of test
@@ -55,6 +56,7 @@ void testClosableFuture() {
         await Future.delayed(Duration(milliseconds: 1)).closeWith(closer);
         mocked.someMethod();
       }
+
       closer.close();
       future();
       // TODO bad design of test

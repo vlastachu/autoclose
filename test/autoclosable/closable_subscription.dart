@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:autoclose/autoclosable/dart/closable_subscription.dart';
@@ -15,7 +14,7 @@ void testClosableSubscription() {
     test('closer.close calls `cancel`', () async {
       final closer = TestCloser();
       final subscription = MockStreamSubscription();
-      
+
       subscription.closeWith(closer);
       closer.close();
       verify(subscription.cancel()).called(1);
@@ -23,8 +22,10 @@ void testClosableSubscription() {
     test('calling `cancel` twice doesn\'t produce exceptions', () async {
       expect(() {
         final closer = TestCloser();
-        final subscription = Stream<int>.periodic(const Duration(seconds: 1), (x) => x).listen((event) { });
-        
+        final subscription =
+            Stream<int>.periodic(const Duration(seconds: 1), (x) => x)
+                .listen((event) {});
+
         subscription.closeWith(closer);
         subscription.cancel();
         closer.close();
@@ -34,7 +35,7 @@ void testClosableSubscription() {
       final closer1 = TestCloser();
       final closer2 = TestCloser();
       final subscription = MockStreamSubscription();
-      
+
       subscription.closeWith(closer1);
       subscription.closeWith(closer2);
       closer1.close();

@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:autoclose/autoclosable/dart/closable_timer.dart';
@@ -16,7 +15,7 @@ void testClosableTimer() {
       final closer = TestCloser();
       final timer = MockTimer();
       when(timer.isActive).thenReturn(true);
-      
+
       timer.closeWith(closer);
       closer.close();
       verify(timer.cancel()).called(1);
@@ -25,7 +24,7 @@ void testClosableTimer() {
       final closer = TestCloser();
       final timer = MockTimer();
       when(timer.isActive).thenReturn(false);
-      
+
       timer.closeWith(closer);
       closer.close();
       verifyNever(timer.cancel());
@@ -35,7 +34,7 @@ void testClosableTimer() {
       final closer2 = TestCloser();
       final timer = MockTimer();
       when(timer.isActive).thenReturn(true);
-      
+
       timer.closeWith(closer1);
       timer.closeWith(closer2);
       closer1.close();

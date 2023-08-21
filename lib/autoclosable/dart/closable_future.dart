@@ -8,7 +8,8 @@ class ClosableFuture<T> extends AutoClosable<Future<T>> {
   final CancelableOperation<T> cancelableOperation;
 
   ClosableFuture(Future<T> future, {void Function()? doOnClose})
-      : cancelableOperation = CancelableOperation<T>.fromFuture(future), super(future, doOnClose);
+      : cancelableOperation = CancelableOperation<T>.fromFuture(future),
+        super(future, doOnClose);
 
   @override
   Future<void> close() {

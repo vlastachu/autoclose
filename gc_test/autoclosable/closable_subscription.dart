@@ -5,7 +5,6 @@ import 'package:test/test.dart';
 import 'package:leak_tracker/leak_tracker.dart';
 import 'package:autoclose/test_utils/test_closer.dart';
 
-
 StreamController streamController = StreamController.broadcast();
 Stream stream = streamController.stream;
 final List<WeakReference> refsThatShouldBeCleared = [];
@@ -18,7 +17,7 @@ class SubscriptionTestCloser extends TestCloser {
   void doAnything(dynamic any) {}
 
   void init(Stream stream) {
-    subcription = WeakReference( stream.listen(doAnything)..closeWith(this));
+    subcription = WeakReference(stream.listen(doAnything)..closeWith(this));
   }
 
   static WeakReference<SubscriptionTestCloser> createAndInit(Stream stream) {
@@ -28,7 +27,6 @@ class SubscriptionTestCloser extends TestCloser {
     return WeakReference(closer);
   }
 }
-
 
 void testClosableSubscription() {
   group('ClosableSubscription', () {
@@ -42,7 +40,7 @@ void testClosableSubscription() {
 
     test('closer.close remove all references by subcription', () async {
       final closerWeakRef = SubscriptionTestCloser.createAndInit(stream);
-      
+
       // let's check the adequacy of our test: the reference to our closer object
       // should not be cleared, as it was captured by the subscription
       // which expect to call **this**.doAnything() when event come to stream (actually never)
