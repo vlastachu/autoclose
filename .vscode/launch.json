@@ -7,7 +7,7 @@
         {
             "name": "autoclose test",
             "request": "launch",
-            "program": "test/autoclose_test.dart",
+            "program": "gc_test/autoclose_test.dart",
             "type": "dart"
         },
         {
