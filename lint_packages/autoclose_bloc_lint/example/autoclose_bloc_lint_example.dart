@@ -1,4 +1,4 @@
-import 'package:autoclose_mobx/autoclose_mobx.dart';
+import 'package:autoclose_bloc_lint/autoclose_bloc_lint.dart';
 
 void main() {
   var awesome = Awesome();

@@ -1,4 +1,4 @@
-import 'package:autoclose_riverpod/autoclose_riverpod.dart';
+import 'package:autoclose_flutter_lint/autoclose_flutter_lint.dart';
 import 'package:test/test.dart';
 
 void main() {
