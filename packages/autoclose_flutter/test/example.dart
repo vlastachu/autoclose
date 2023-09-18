@@ -115,7 +115,7 @@ class _ScrollListenerState extends State<ScrollListener>
   void initState() {
     widget.scrollController.addListenerWithCloser(this,
         () => setState(() => offset = widget.scrollController.offset.round()));
-        
+
     super.initState();
   }
 
