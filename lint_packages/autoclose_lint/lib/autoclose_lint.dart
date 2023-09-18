@@ -6,9 +6,6 @@ import 'package:analyzer/error/listener.dart';
 import 'package:analyzer/source/source_range.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
-// class LintConfig() {
-
-// }
 
 PluginBase createPlugin() => AutoCloseLinter();
 
@@ -81,11 +78,10 @@ class ClosableStreamExpressionLint extends DartLintRule {
     CustomLintContext context,
   ) {
     context.registry.addExpressionStatement((node) {
-      const subscriptionChecker = TypeChecker.fromName('StreamSubscription');
+      const subscriptionChecker = TypeChecker.fromUrl('dart:async#StreamSubscription');
       final expressionType = node.expression.staticType;
       if (expressionType != null &&
-          subscriptionChecker.isAssignableFromType(expressionType) &&
-          expressionType.element?.library?.identifier == 'dart:async') {
+          subscriptionChecker.isAssignableFromType(expressionType)) {
         reporter.reportErrorForNode(code, node);
       }
     });
