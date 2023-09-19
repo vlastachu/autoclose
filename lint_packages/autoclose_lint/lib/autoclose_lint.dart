@@ -106,6 +106,7 @@ class ClosableStreamAssignmentLint extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) {
+    
     context.registry.addVariableDeclaration((node) {
       const subscriptionChecker = TypeChecker.fromName('StreamSubscription');
       final expressionType = node.initializer?.staticType;

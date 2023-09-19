@@ -1,5 +1,7 @@
+import 'package:analyzer/dart/element/type.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
+import 'package:analyzer/source/source_range.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'closable_lint_config.dart';
@@ -28,13 +30,13 @@ class ClosableAssignmentLint extends DartLintRule {
   }
 
   @override
-  List<Fix> getFixes() => [_HandleStreamSubscriptionFix()];
+  List<Fix> getFixes() => [_HandleClosableAssignmentFix()];
 }
 
-class _HandleStreamSubscriptionFix extends DartFix {
+class _HandleClosableAssignmentFix extends DartFix {
   final LintConfig config;
 
-  _HandleStreamSubscriptionFix(this.config);
+  _HandleClosableAssignmentFix(this.config);
 
   @override
   void run(
@@ -44,11 +46,11 @@ class _HandleStreamSubscriptionFix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) {
-    context.registry.addExpressionStatement((node) {
+    context.registry.addVariableDeclarationList((node) {
       if (!analysisError.sourceRange.intersects(node.sourceRange)) return;
 
       final changeBuilder = reporter.createChangeBuilder(
-        message: 'append `.closeWith(this)`',
+        message: 'replace with `.closeWith(this)`',
         priority: 80,
       );
 
@@ -56,7 +58,40 @@ class _HandleStreamSubscriptionFix extends DartFix {
         if (!builder.importsLibrary(config.closableSourceLib)) {
           builder.importLibrary(config.closableSourceLib);
         }
-        builder.addSimpleInsertion(node.expression.end, '.closeWith(this)');
+        
+
+        if (node.variables.length != 1) {
+          bool checkType(DartType? type) =>
+              type != null &&
+              config.closableTypeChecker.isAssignableFromType(type);
+          builder.addReplacement(SourceRange(node.offset, node.length),
+              (builder) {
+            for (final variable in node.variables) {
+              String? initializer = variable.initializer?.toSource();
+              if (checkType(variable.initializer?.staticType)) {
+                builder.write('${initializer!}.closeWith(this);');
+              } else {
+                builder.writeLocalVariableDeclaration(
+                  variable.name.lexeme,
+                  isConst: node.isConst,
+                  isFinal: node.isFinal,
+                  type: node.type?.type,
+                  initializerWriter: initializer == null
+                      ? null
+                      : () => builder.write(initializer),
+                );
+              }
+              builder.write('\n');
+            }
+          });
+        } else {
+          final initializer = node.variables[0].initializer;
+          if (initializer == null) return;
+
+          builder.addSimpleInsertion(initializer.end, '.closeWith(this)');
+          builder.addDeletion(
+              SourceRange(node.offset, initializer.offset - node.offset));
+        }
       });
     });
   }
