@@ -1,17 +1,8 @@
 import 'package:analyzer/source/source_range.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
-class CloserAssistConfig {
-  final TypeChecker closerMixinTypeChecker;
-  final TypeChecker targetClassTypeChecker; // TypeChecker.fromUrl('package:flutter/src/widgets/framework.dart#State')
-  final Uri closerSourceLib;
-  final String assistMessage;
-  final String mixinName;
+import 'closer_assist_config.dart';
 
-  CloserAssistConfig(this.assistMessage, this.closerSourceLib, this.mixinName,
-      {required this.closerMixinTypeChecker,
-      required this.targetClassTypeChecker});
-}
 
 class AddCloserMixinAssist extends DartAssist {
   final CloserAssistConfig config;

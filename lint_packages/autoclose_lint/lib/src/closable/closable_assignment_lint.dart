@@ -6,13 +6,14 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'closable_lint_config.dart';
 
-
 class ClosableAssignmentLint extends DartLintRule {
-  final LintConfig config;
+  final ClosableLintConfig config;
   ClosableAssignmentLint(this.config)
       : super(
             code: LintCode(
-                name: config.name, problemMessage: config.problemMessage));
+                name: '${config.name}_assignment_unhandled',
+                problemMessage:
+                    '${config.userFriendlyName} assignment may be replaced by `.closeWith(this)`'));
 
   @override
   void run(
@@ -20,8 +21,8 @@ class ClosableAssignmentLint extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) {
-    context.registry.addExpressionStatement((node) {
-      final expressionType = node.expression.staticType;
+    context.registry.addVariableDeclaration((node) {
+      final expressionType = node.initializer?.staticType;
       if (expressionType != null &&
           config.closableTypeChecker.isAssignableFromType(expressionType)) {
         reporter.reportErrorForNode(code, node);
@@ -30,13 +31,13 @@ class ClosableAssignmentLint extends DartLintRule {
   }
 
   @override
-  List<Fix> getFixes() => [_HandleClosableAssignmentFix()];
+  List<Fix> getFixes() => [_HandleAssignmentFix(config)];
 }
 
-class _HandleClosableAssignmentFix extends DartFix {
-  final LintConfig config;
+class _HandleAssignmentFix extends DartFix {
+  final ClosableLintConfig config;
 
-  _HandleClosableAssignmentFix(this.config);
+  _HandleAssignmentFix(this.config);
 
   @override
   void run(
@@ -58,7 +59,6 @@ class _HandleClosableAssignmentFix extends DartFix {
         if (!builder.importsLibrary(config.closableSourceLib)) {
           builder.importLibrary(config.closableSourceLib);
         }
-        
 
         if (node.variables.length != 1) {
           bool checkType(DartType? type) =>

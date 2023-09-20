@@ -1,15 +1,18 @@
 
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
-class LintConfig {
+class ClosableLintConfig {
   final String name;
-  final String problemMessage;
-  final TypeChecker closableTypeChecker;
-  final Uri closableSourceLib;
+  final String userFriendlyName;
+  final String closableTargetUrl;
+  final String closableSourceUrl;
 
-  LintConfig(
+  ClosableLintConfig(
       {required this.name,
-      required this.problemMessage,
-      required this.closableTypeChecker,
-      required this.closableSourceLib});
+      required this.userFriendlyName,
+      required this.closableTargetUrl,
+      required this.closableSourceUrl});
+
+  late final Uri closableSourceLib = Uri.parse(closableSourceUrl);
+  late final TypeChecker closableTypeChecker = TypeChecker.fromUrl(closableTargetUrl);
 }

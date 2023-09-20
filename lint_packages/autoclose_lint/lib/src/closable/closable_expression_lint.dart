@@ -5,11 +5,13 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'closable_lint_config.dart';
 
 class ClosableExpressionLint extends DartLintRule {
-  final LintConfig config;
+  final ClosableLintConfig config;
   ClosableExpressionLint(this.config)
       : super(
             code: LintCode(
-                name: config.name, problemMessage: config.problemMessage));
+                name: '${config.name}_expression_unhandled',
+                problemMessage:
+                    '${config.userFriendlyName} should be handled'));
 
   @override
   void run(
@@ -17,8 +19,8 @@ class ClosableExpressionLint extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) {
-    context.registry.addVariableDeclaration((node) {
-      final expressionType = node.initializer?.staticType;
+    context.registry.addExpressionStatement((node) {
+      final expressionType = node.expression.staticType;
       if (expressionType != null &&
           config.closableTypeChecker.isAssignableFromType(expressionType)) {
         reporter.reportErrorForNode(code, node);
@@ -27,13 +29,13 @@ class ClosableExpressionLint extends DartLintRule {
   }
 
   @override
-  List<Fix> getFixes() => [_HandleAssignmentFix(config)];
+  List<Fix> getFixes() => [_HandleExpressionFix(config)];
 }
 
-class _HandleAssignmentFix extends DartFix {
-  final LintConfig config;
+class _HandleExpressionFix extends DartFix {
+  final ClosableLintConfig config;
 
-  _HandleAssignmentFix(this.config);
+  _HandleExpressionFix(this.config);
 
   @override
   void run(
