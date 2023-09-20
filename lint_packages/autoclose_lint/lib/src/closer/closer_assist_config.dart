@@ -1,4 +1,3 @@
-
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 class CloserAssistConfig {
@@ -16,5 +15,6 @@ class CloserAssistConfig {
   get assistMessage => 'Add corresponding Closer mixin';
 
   late final Uri closerSourceLib = Uri.parse(closerSourceUrl);
-  late final TypeChecker targetClassTypeChecker = TypeChecker.fromUrl(targetClassUrl);
+  late final TypeChecker targetClassTypeChecker =
+      TypeChecker.fromUrl(targetClassUrl);
 }

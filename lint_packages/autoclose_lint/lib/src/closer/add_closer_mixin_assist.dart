@@ -3,7 +3,6 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'closer_assist_config.dart';
 
-
 class AddCloserMixinAssist extends DartAssist {
   final CloserAssistConfig config;
 

@@ -23,14 +23,18 @@ final blocCloserConfig = CloserAssistConfig(
 );
 
 List<LintRule> getClosableLints(ClosableLintConfig config) => [
-  ClosableExpressionLint(config),
-  ClosableAssignmentLint(config),
-];
+      ClosableExpressionLint(config),
+      ClosableAssignmentLint(config),
+    ];
 
 class AutoCloseLinter extends PluginBase {
   @override
-  List<LintRule> getLintRules(CustomLintConfigs configs) => [streamClosableConfig,].expand(getClosableLints).toList();
+  List<LintRule> getLintRules(CustomLintConfigs configs) => [
+        streamClosableConfig,
+      ].expand(getClosableLints).toList();
 
   @override
-  List<Assist> getAssists() => [AddCloserMixinAssist(config: blocCloserConfig),];
+  List<Assist> getAssists() => [
+        AddCloserMixinAssist(config: blocCloserConfig),
+      ];
 }

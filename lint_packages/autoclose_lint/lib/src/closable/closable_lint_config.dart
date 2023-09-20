@@ -1,4 +1,3 @@
-
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 class ClosableLintConfig {
@@ -14,5 +13,6 @@ class ClosableLintConfig {
       required this.closableSourceUrl});
 
   late final Uri closableSourceLib = Uri.parse(closableSourceUrl);
-  late final TypeChecker closableTypeChecker = TypeChecker.fromUrl(closableTargetUrl);
+  late final TypeChecker closableTypeChecker =
+      TypeChecker.fromUrl(closableTargetUrl);
 }
