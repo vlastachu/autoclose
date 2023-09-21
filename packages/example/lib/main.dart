@@ -36,10 +36,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     const stream = Stream.empty();
-    final bom = 1;
-    stream.listen((event) {}).closeWith(this);
-    ;
-    sub.cancel();
+    final bom = stream.listen((event) {}); //.closeWith(this);
+    stream.listen((event) {})..closeWith(this);
+    
     super.initState();
   }
 

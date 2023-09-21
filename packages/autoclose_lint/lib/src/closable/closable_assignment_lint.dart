@@ -1,3 +1,4 @@
+import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
@@ -24,10 +25,26 @@ class ClosableAssignmentLint extends DartLintRule {
     context.registry.addVariableDeclaration((node) {
       final expressionType = node.initializer?.staticType;
       if (expressionType != null &&
-          config.closableTypeChecker.isAssignableFromType(expressionType)) {
+          config.closableTypeChecker.isAssignableFromType(expressionType) &&
+          !containsCloseInMethodCascade(node.initializer!)) {
         reporter.reportErrorForNode(code, node);
       }
     });
+  }
+
+  /// Checks whether user already invokes `closeWith` call in method cascade
+  bool containsCloseInMethodCascade(Expression expression) {
+    // for example we have such expression:
+    // stream.listen((event) {})..some()..closeWith(this)
+    // expression.childEntities will contain:
+    // [0] stream.listen((event) {}) // skip this child as it may contain inner closable expressions
+    // [1] ..some()
+    // [2] ..closeWith(this)
+    final cascadeChilds = expression.childEntities.skip(1);
+    return cascadeChilds.any((element) =>
+        element is MethodInvocation &&
+        element.isCascaded &&
+        element.methodName.name == 'closeWith');
   }
 
   @override

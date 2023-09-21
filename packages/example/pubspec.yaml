@@ -18,7 +18,7 @@ dependency_overrides:
   autoclose_flutter:
     path: ../../packages/autoclose_flutter
   autoclose_lint:
-    path: ../../lint_packages/autoclose_lint
+    path: ../../packages/autoclose_lint
 
 dev_dependencies:
   autoclose_lint:
