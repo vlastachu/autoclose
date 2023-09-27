@@ -4,14 +4,17 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'closer_assist_config.dart';
 
 class AddCloserMixinAssist extends DartAssist {
-  final CloserAssistConfig config;
+  final CloserAssistPackageConfig config;
 
-  AddCloserMixinAssist({required this.config});
+  AddCloserMixinAssist(this.config);
 
   @override
   void run(CustomLintResolver resolver, ChangeReporter reporter,
       CustomLintContext context, SourceRange target) {
     context.registry.addClassDeclaration((node) {
+      if (!config.sourceLibContainsInPubspec(context)) {
+        return;
+      }
       // Check that the visited node is under the cursor
       if (!target.intersects(node.sourceRange)) return;
 

@@ -8,13 +8,13 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'closable_lint_config.dart';
 
 class ClosableAssignmentLint extends DartLintRule {
-  final ClosableLintConfig config;
+  final ClosableLintPackageConfig config;
   ClosableAssignmentLint(this.config)
       : super(
             code: LintCode(
                 name: '${config.name}_assignment_unhandled',
                 problemMessage:
-                    '${config.userFriendlyName} assignment may be replaced by `.closeWith(this)`'));
+                    '${config.userFriendlyName} assignment should be handled by `..closeWith(this)`'));
 
   @override
   void run(
@@ -22,6 +22,9 @@ class ClosableAssignmentLint extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) {
+    if (!config.sourceLibContainsInPubspec(context)) {
+      return;
+    }
     context.registry.addVariableDeclaration((node) {
       final expressionType = node.initializer?.staticType;
       if (expressionType != null &&
@@ -48,13 +51,47 @@ class ClosableAssignmentLint extends DartLintRule {
   }
 
   @override
-  List<Fix> getFixes() => [_HandleAssignmentFix(config)];
+  List<Fix> getFixes() => [
+        _AddCascadeCallAssignmentFix(config),
+        _ReplaceAssignmentFix(config),
+      ];
 }
 
-class _HandleAssignmentFix extends DartFix {
-  final ClosableLintConfig config;
+class _AddCascadeCallAssignmentFix extends DartFix {
+  final ClosableLintPackageConfig config;
 
-  _HandleAssignmentFix(this.config);
+  _AddCascadeCallAssignmentFix(this.config);
+
+  @override
+  void run(
+    CustomLintResolver resolver,
+    ChangeReporter reporter,
+    CustomLintContext context,
+    AnalysisError analysisError,
+    List<AnalysisError> others,
+  ) {
+    context.registry.addVariableDeclaration((node) {
+      if (!analysisError.sourceRange.intersects(node.sourceRange)) return;
+
+      final changeBuilder = reporter.createChangeBuilder(
+        message: 'add `..closeWith(this)`',
+        priority: 81,
+      );
+
+      changeBuilder.addDartFileEdit((builder) {
+        if (!builder.importsLibrary(config.closableSourceLib)) {
+          builder.importLibrary(config.closableSourceLib);
+        }
+        builder.addSimpleInsertion(node.end, '..closeWith(this)');
+      });
+    });
+  }
+}
+
+class _ReplaceAssignmentFix extends DartFix {
+  final ClosableLintPackageConfig config;
+
+  _ReplaceAssignmentFix(this.config);
 
   @override
   void run(

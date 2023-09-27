@@ -38,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
     const stream = Stream.empty();
     final bom = stream.listen((event) {}); //.closeWith(this);
     stream.listen((event) {})..closeWith(this);
-    
+
     super.initState();
   }
 

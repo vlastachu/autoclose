@@ -11,7 +11,7 @@ class ClosableTicker extends AutoClosable<Ticker> {
   }
 
   @override
-  bool? get isClosed => null;
+  bool? get isClosed => !closable.isActive;
 }
 
 extension TickerClose on Ticker {

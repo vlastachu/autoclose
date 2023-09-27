@@ -5,7 +5,7 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'closable_lint_config.dart';
 
 class ClosableExpressionLint extends DartLintRule {
-  final ClosableLintConfig config;
+  final ClosableLintPackageConfig config;
   ClosableExpressionLint(this.config)
       : super(
             code: LintCode(
@@ -19,6 +19,9 @@ class ClosableExpressionLint extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) {
+    if (!config.sourceLibContainsInPubspec(context)) {
+      return;
+    }
     context.registry.addExpressionStatement((node) {
       final expressionType = node.expression.staticType;
       if (expressionType != null &&
@@ -33,7 +36,7 @@ class ClosableExpressionLint extends DartLintRule {
 }
 
 class _HandleExpressionFix extends DartFix {
-  final ClosableLintConfig config;
+  final ClosableLintPackageConfig config;
 
   _HandleExpressionFix(this.config);
 
