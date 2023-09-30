@@ -1,25 +1,29 @@
 import 'package:autoclose_lint/src/utils.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
-class ClosableLintConfig {
+class SubclosableLintConfig {
   final String closableTargetUrl;
+  final String methodName;
 
-  ClosableLintConfig({
+  SubclosableLintConfig({
     required this.closableTargetUrl,
+    required this.methodName,
   });
 }
 
-class ClosableLintPackageConfig {
+class SubclosableLintPackageConfig {
   final String closableSourceUrl;
-  final ClosableLintConfig config;
+  final SubclosableLintConfig config;
 
-  ClosableLintPackageConfig({
+  SubclosableLintPackageConfig({
     required this.closableSourceUrl,
     required this.config,
   });
 
+  String get methodName => config.methodName;
   late final targetClassName = config.closableTargetUrl.split('#')[1];
   late final String name = camelCaseToSnakeCase(targetClassName);
+  late final String methodSnakeCase = camelCaseToSnakeCase(methodName);
   late final String userFriendlyName = camelCaseToFriendlyCase(targetClassName);
   late final Uri closableSourceLib = Uri.parse(closableSourceUrl);
 

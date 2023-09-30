@@ -1,4 +1,4 @@
-import 'package:autoclose_flutter/autoclosable/closable_listenable.dart';
+import 'package:autoclose_flutter/subautoclosable/closable_listenable.dart';
 import 'package:autoclose_flutter/autoclose_flutter.dart';
 import 'package:flutter/material.dart';
 

@@ -3,6 +3,7 @@ library autoclose_lint;
 import 'package:autoclose_lint/src/package_config.dart';
 import 'package:autoclose_lint/src/closable/closable_lint_config.dart';
 import 'package:autoclose_lint/src/closer/closer_assist_config.dart';
+import 'package:autoclose_lint/src/subclosable/subclosable_lint_config.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'src/auto_close_linter.dart';
 
@@ -14,7 +15,7 @@ PluginBase createPlugin() => AutoCloseLinter({
         ClosableLintConfig(
           closableTargetUrl: 'dart:async#Timer',
         ),
-      ], closers: []),
+      ]),
       'package:autoclose_flutter/autoclose_flutter.dart':
           PackageConfig(closables: [
         ClosableLintConfig(
@@ -57,6 +58,15 @@ PluginBase createPlugin() => AutoCloseLinter({
           targetClassUrl: 'package:flutter/src/widgets/framework.dart#State',
           mixinName: 'CloserWidgetState',
         ),
+      ], subClosables: [
+        SubclosableLintConfig(
+            closableTargetUrl:
+                'package:flutter/src/foundation/change_notifier.dart#Listenable',
+            methodName: 'addListener'),
+        SubclosableLintConfig(
+            closableTargetUrl:
+                'package:flutter/src/widgets/binding.dart#WidgetsBinding',
+            methodName: 'addObserver'),
       ]),
       'package:autoclose_bloc/autoclose_bloc.dart': PackageConfig(closables: [
         ClosableLintConfig(

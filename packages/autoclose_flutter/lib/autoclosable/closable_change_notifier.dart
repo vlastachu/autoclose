@@ -14,7 +14,7 @@ class ClosableChangeNotifier extends AutoClosable<ChangeNotifier> {
   bool? get isClosed => null;
 }
 
-extension SubscriptionClose on ChangeNotifier {
+extension ChangeNotifierClose on ChangeNotifier {
   void closeWith(HasCloser hasCloser, {void Function()? doOnClose}) {
     hasCloser.closer.addClosable(ClosableChangeNotifier(this, doOnClose));
   }
