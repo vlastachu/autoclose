@@ -4,6 +4,8 @@ import 'package:autoclose_lint/src/closable/closable_expression_lint.dart';
 import 'package:autoclose_lint/src/closable/closable_lint_config.dart';
 import 'package:autoclose_lint/src/closer/add_closer_mixin_assist.dart';
 import 'package:autoclose_lint/src/closer/closer_assist_config.dart';
+import 'package:autoclose_lint/src/subclosable/subclosable_call_lint.dart';
+import 'package:autoclose_lint/src/subclosable/subclosable_lint_config.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 class AutoCloseLinter extends PluginBase {
@@ -16,6 +18,10 @@ class AutoCloseLinter extends PluginBase {
         ClosableAssignmentLint(config),
       ];
 
+  List<LintRule> _getSubclosableLints(SubclosableLintPackageConfig config) => [
+        SubclosableCallLint(config),
+      ];
+
   List<Assist> _getCloserAssists(CloserAssistPackageConfig config) =>
       [AddCloserMixinAssist(config)];
 
@@ -24,6 +30,12 @@ class AutoCloseLinter extends PluginBase {
         in configsWithPackages.entries) {
       for (final config in packageConfig.closables) {
         yield* _getClosableLints(ClosableLintPackageConfig(
+          closableSourceUrl: package,
+          config: config,
+        ));
+      }
+      for (final config in packageConfig.subClosables) {
+        yield* _getSubclosableLints(SubclosableLintPackageConfig(
           closableSourceUrl: package,
           config: config,
         ));

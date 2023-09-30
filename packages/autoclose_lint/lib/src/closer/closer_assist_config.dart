@@ -26,7 +26,7 @@ class CloserAssistPackageConfig {
 
   late final Uri closerSourceLib = Uri.parse(closerSourceUrl);
   bool sourceLibContainsInPubspec(CustomLintContext context) =>
-      context.pubspec.dependencies.keys.contains(closerSourceLib.host);
+      context.pubspec.dependencies.keys.contains(closerSourceLib.pathSegments[0]);
   late final TypeChecker targetClassTypeChecker =
       TypeChecker.fromUrl(config.targetClassUrl);
 }

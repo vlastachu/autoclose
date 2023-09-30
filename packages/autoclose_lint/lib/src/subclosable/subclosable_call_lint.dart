@@ -66,7 +66,7 @@ class _ReplaceWithSafeCall extends DartFix {
         }
         builder.addSimpleReplacement(
             SourceRange(node.methodName.end,
-                node.argumentList.offset - node.methodName.end),
+                node.argumentList.leftParenthesis.offset + 1 - node.methodName.end),
             'WithCloser(this, ');
       });
     });

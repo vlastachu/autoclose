@@ -11,10 +11,10 @@ class AddCloserMixinAssist extends DartAssist {
   @override
   void run(CustomLintResolver resolver, ChangeReporter reporter,
       CustomLintContext context, SourceRange target) {
+    if (!config.sourceLibContainsInPubspec(context)) {
+      return;
+    }
     context.registry.addClassDeclaration((node) {
-      if (!config.sourceLibContainsInPubspec(context)) {
-        return;
-      }
       // Check that the visited node is under the cursor
       if (!target.intersects(node.sourceRange)) return;
 

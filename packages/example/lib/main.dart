@@ -1,4 +1,5 @@
 import 'package:autoclose/autoclose.dart';
+import 'package:autoclose_flutter/autoclose_flutter.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -30,14 +31,17 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with CloserWidgetState {
   int _counter = 0;
 
   @override
   void initState() {
     const stream = Stream.empty();
+    ScrollController().addListener(() {
+      
+    });
     final bom = stream.listen((event) {}); //.closeWith(this);
-    stream.listen((event) {})..closeWith(this);
+    stream.listen((event) {}).closeWith(this);
 
     super.initState();
   }
