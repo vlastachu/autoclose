@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:autoclose/autoclose.dart';
 import 'package:autoclose_flutter/autoclose_flutter.dart';
+import 'package:autoclose_flutter/subautoclosable/closable_listenable.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -37,10 +40,14 @@ class _MyHomePageState extends State<MyHomePage> with CloserWidgetState {
   @override
   void initState() {
     const stream = Stream.empty();
-    ScrollController().addListener(() {
+    ScrollController().addListenerWithCloser(this,    () {
       
     });
-    final bom = stream.listen((event) {}); //.closeWith(this);
+    // final bom = stream.listen((event) {}); //.closeWith(this);
+    // final vom = bom;
+    // expect_lint: stream_subscription_assignment_unhandled
+    final vv = StreamSubscription();
+    final vv1 = vv ?? StreamSubscription()..closeWith(this);
     stream.listen((event) {}).closeWith(this);
 
     super.initState();
