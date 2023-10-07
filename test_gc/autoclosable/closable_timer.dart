@@ -1,41 +1,41 @@
-import 'package:autoclose/autoclosable/dart/closable_future.dart';
+import 'dart:async';
+
+import 'package:autoclose/autoclosable/dart/closable_timer.dart';
 import 'package:autoclose/test_utils/force_gc.dart';
 import 'package:autoclose/test_utils/test_closer.dart';
 import 'package:test/test.dart';
 
 final List<WeakReference> refsThatShouldBeCleared = [];
 
-class FutureTestCloser extends TestCloser {
-  late WeakReference<Future<dynamic>> futureWeakRef;
-  FutureTestCloser();
+class TimerTestCloser extends TestCloser {
+  late WeakReference<Timer> timerWeakRef;
+  TimerTestCloser();
 
   // method to just catch reference on `this`
   void doAnything() {}
 
-  Future<dynamic> init() async {
-    final someValue = await Future.delayed(Duration(hours: 1)).closeWith(this);
-    doAnything();
-    return someValue;
+  Timer init() {
+    return Timer(Duration(hours: 1), doAnything)..closeWith(this);
   }
 
-  static WeakReference<FutureTestCloser> createAndInit() {
+  static WeakReference<TimerTestCloser> createAndInit() {
     // function used to not hold the hard link to closer
-    final closer = FutureTestCloser();
-    closer.futureWeakRef = WeakReference(closer.init());
+    final closer = TimerTestCloser();
+    closer.timerWeakRef = WeakReference(closer.init());
     closer.close();
     return WeakReference(closer);
   }
 }
 
-void testClosableFuture() {
-  group('ClosableFuture', () {
-    test('closer.close remove all references by subcription', () async {
-      final closerWeakRef = FutureTestCloser.createAndInit();
+void testClosableTimer() {
+  group('ClosableTimer', () {
+    test('closer.close cancels timer', () async {
+      final closerWeakRef = TimerTestCloser.createAndInit();
       refsThatShouldBeCleared.add(closerWeakRef);
 
       closerWeakRef.target?.close();
       await forceGC();
-      expect(closerWeakRef.target?.futureWeakRef.target, isNull);
+      expect(closerWeakRef.target?.timerWeakRef.target, isNull);
     });
     test('closer ref was closed after previos test closure closed', () async {
       await forceGC();
