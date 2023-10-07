@@ -2,7 +2,8 @@ import 'package:autoclose/closer/has_closer.dart';
 import 'package:autoclose/subautoclosable/subautoclosable.dart';
 import 'package:flutter/widgets.dart';
 
-class ClosableWidgetsBinding extends SubAutoClosable<WidgetsBinding, WidgetsBindingObserver> {
+class ClosableWidgetsBinding
+    extends SubAutoClosable<WidgetsBinding, WidgetsBindingObserver> {
   ClosableWidgetsBinding(super.closable, super.subClosable, super.onClose);
 
   @override
@@ -15,9 +16,11 @@ class ClosableWidgetsBinding extends SubAutoClosable<WidgetsBinding, WidgetsBind
 }
 
 extension WidgetsBindingClose on WidgetsBinding {
-  void addObserverWithCloser(HasCloser hasCloser, WidgetsBindingObserver observer,
+  void addObserverWithCloser(
+      HasCloser hasCloser, WidgetsBindingObserver observer,
       {void Function()? doOnClose}) {
     addObserver(observer);
-    hasCloser.closer.addSubClosable(ClosableWidgetsBinding(this, observer, doOnClose));
+    hasCloser.closer
+        .addSubClosable(ClosableWidgetsBinding(this, observer, doOnClose));
   }
 }

@@ -24,7 +24,8 @@ class ClosableLintPackageConfig {
   late final Uri closableSourceLib = Uri.parse(closableSourceUrl);
 
   bool sourceLibContainsInPubspec(CustomLintContext context) =>
-      context.pubspec.dependencies.keys.contains(closableSourceLib.pathSegments[0]);
+      context.pubspec.dependencies.keys
+          .contains(closableSourceLib.pathSegments[0]);
 
   late final TypeChecker closableTypeChecker =
       TypeChecker.fromUrl(config.closableTargetUrl);

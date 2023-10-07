@@ -18,6 +18,7 @@ extension ListenableClose on Listenable {
   void addListenerWithCloser(HasCloser hasCloser, VoidCallback listener,
       {void Function()? doOnClose}) {
     addListener(listener);
-    hasCloser.closer.addSubClosable(ClosableListenable(this, listener, doOnClose));
+    hasCloser.closer
+        .addSubClosable(ClosableListenable(this, listener, doOnClose));
   }
 }

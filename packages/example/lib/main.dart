@@ -40,14 +40,13 @@ class _MyHomePageState extends State<MyHomePage> with CloserWidgetState {
   @override
   void initState() {
     const stream = Stream.empty();
-    ScrollController().addListenerWithCloser(this,    () {
-      
-    });
+    ScrollController().addListenerWithCloser(this, () {});
     // final bom = stream.listen((event) {}); //.closeWith(this);
     // final vom = bom;
     // expect_lint: stream_subscription_assignment_unhandled
     final vv = StreamSubscription();
-    final vv1 = vv ?? StreamSubscription()..closeWith(this);
+    final vv1 = vv ?? StreamSubscription()
+      ..closeWith(this);
     stream.listen((event) {}).closeWith(this);
 
     super.initState();
