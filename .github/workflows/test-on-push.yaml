@@ -18,5 +18,4 @@ jobs:
       # skip for now: need to make tests workflow for inherited packages
       # - run: dart analyze 
       - run: dart test
-      - run: dart run gc_test/autoclose_test.dart
-      
+      - run: dart run --observe gc_test/autoclose_test.dart
