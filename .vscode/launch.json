@@ -35,18 +35,6 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"
-        },
-        {
-            "name": "autoclose_mobx",
-            "cwd": "packages/autoclose_mobx",
-            "request": "launch",
-            "type": "dart"
-        },
-        {
-            "name": "autoclose_riverpod",
-            "cwd": "packages/autoclose_riverpod",
-            "request": "launch",
-            "type": "dart"
         }
     ]
 }

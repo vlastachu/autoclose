@@ -1,7 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:autoclose_flutter/autoclose_flutter.dart';
-
 void main() {
   test('adds one to input values', () {
     // final calculator = Calculator();
