@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:autoclose/autoclose.dart';
+import 'package:autoclose/test_utils/force_gc.dart';
 import 'package:test/test.dart';
-import 'package:leak_tracker/leak_tracker.dart';
 import 'package:autoclose/test_utils/test_closer.dart';
 
 StreamController streamController = StreamController.broadcast();

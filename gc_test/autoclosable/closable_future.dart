@@ -1,6 +1,6 @@
 import 'package:autoclose/autoclosable/dart/closable_future.dart';
+import 'package:autoclose/test_utils/force_gc.dart';
 import 'package:autoclose/test_utils/test_closer.dart';
-import 'package:leak_tracker/leak_tracker.dart';
 import 'package:test/test.dart';
 
 final List<WeakReference> refsThatShouldBeCleared = [];
