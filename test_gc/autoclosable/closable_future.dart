@@ -3,8 +3,6 @@ import 'package:autoclose/test_utils/force_gc.dart';
 import 'package:autoclose/test_utils/test_closer.dart';
 import 'package:test/test.dart';
 
-final List<WeakReference> refsThatShouldBeCleared = [];
-
 class FutureTestCloser extends TestCloser {
   late WeakReference<Future<dynamic>> futureWeakRef;
   FutureTestCloser();
@@ -17,32 +15,35 @@ class FutureTestCloser extends TestCloser {
     doAnything();
     return someValue;
   }
+}
 
-  static WeakReference<FutureTestCloser> createAndInit() {
-    // function used to not hold the hard link to closer
-    final closer = FutureTestCloser();
-    closer.futureWeakRef = WeakReference(closer.init());
+@pragma('vm:never-inline')
+WeakReference<FutureTestCloser> createAndInit({required bool andClose}) {
+  // function used to not hold the hard link to closer
+  final closer = FutureTestCloser();
+  closer.futureWeakRef = WeakReference(closer.init());
+  if (andClose) {
     closer.close();
-    return WeakReference(closer);
   }
+  return WeakReference(closer);
 }
 
 void testClosableFuture() {
   group('ClosableFuture', () {
-    test('closer.close cancels future waiting', () async {
-      final closerWeakRef = FutureTestCloser.createAndInit();
-      refsThatShouldBeCleared.add(closerWeakRef);
-
-      closerWeakRef.target?.close();
+    test('waiting for the future prevents you from releasing the ref',
+        () async {
+      final closerWeakRef = createAndInit(andClose: false);
       await forceGC();
-      expect(closerWeakRef.target?.futureWeakRef.target, isNull);
+      expect(closerWeakRef.target, isNotNull);
     });
-    test('closer ref was closed after previos test closure closed', () async {
+    test('closer.close cancels future waiting', () async {
+      final closerWeakRef = createAndInit(andClose: true);
+
+      // if you uncomment this line then closerWeakRef.target will be not null
+      // closerWeakRef.target?.close();
+      // that's brings up a lot of different thoughts
       await forceGC();
-      expect(refsThatShouldBeCleared, isNotEmpty);
-      for (final ref in refsThatShouldBeCleared) {
-        expect(ref.target, isNull);
-      }
+      expect(closerWeakRef.target, isNull);
     });
   });
 }

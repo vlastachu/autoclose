@@ -7,6 +7,13 @@ import 'package:autoclose/test_utils/test_closer.dart';
 
 StreamController streamController = StreamController.broadcast();
 Stream stream = streamController.stream;
+
+void updateStream() {
+  streamController.close();
+  streamController = StreamController.broadcast();
+  stream = streamController.stream;
+}
+
 final List<WeakReference> refsThatShouldBeCleared = [];
 
 class SubscriptionTestCloser extends TestCloser {
@@ -19,13 +26,23 @@ class SubscriptionTestCloser extends TestCloser {
   void init(Stream stream) {
     subcription = WeakReference(stream.listen(doAnything)..closeWith(this));
   }
+}
 
-  static WeakReference<SubscriptionTestCloser> createAndInit(Stream stream) {
-    // function used to not hold the hard link to closer
-    final closer = SubscriptionTestCloser();
-    closer.init(stream);
-    return WeakReference(closer);
+@pragma('vm:never-inline')
+WeakReference<SubscriptionTestCloser> createAndInit({required bool andClose}) {
+  // function used to not hold the hard link to closer
+  final closer = SubscriptionTestCloser();
+  closer.init(stream);
+  if (andClose) {
+    closer.close();
   }
+  return WeakReference(closer);
+}
+
+// TODO replace to utils 
+@pragma('vm:never-inline')
+void indirectionalWeakRefClose(WeakReference<TestCloser> closer) {
+  closer.target?.close();
 }
 
 void testClosableSubscription() {
@@ -37,9 +54,8 @@ void testClosableSubscription() {
       expect(streamController.isClosed, isFalse);
       expect(closerWeakRef.target, isNull);
     });
-
-    test('closer.close remove all references by subcription', () async {
-      final closerWeakRef = SubscriptionTestCloser.createAndInit(stream);
+    test('subcription keep reference to SubscriptionTestCloser', () async {
+      final closerWeakRef = createAndInit(andClose: false);
 
       // let's check the adequacy of our test: the reference to our closer object
       // should not be cleared, as it was captured by the subscription
@@ -47,21 +63,26 @@ void testClosableSubscription() {
       await forceGC();
       expect(streamController.hasListener, isTrue);
       expect(closerWeakRef.target, isNotNull);
-      expect(closerWeakRef.target?.subcription.target, isNotNull);
 
-      closerWeakRef.target?.close();
+      // clear before next test
+      updateStream();
       await forceGC();
       expect(streamController.hasListener, isFalse);
-      expect(streamController.isClosed, isFalse);
-      expect(closerWeakRef.target?.subcription.target, isNull);
-      refsThatShouldBeCleared.add(closerWeakRef);
-    });
-    test('closer ref was closed after previos test closure closed', () async {
+      expect(closerWeakRef.target, isNotNull);
+
+      // just check my observation how dart GC works: 
+      // closer.target?.close(); // <-- uncomment will cause keeping reference by ... whatever ... compiler optimizations
+      indirectionalWeakRefClose(closerWeakRef);
       await forceGC();
-      expect(refsThatShouldBeCleared, isNotEmpty);
-      for (final ref in refsThatShouldBeCleared) {
-        expect(ref.target, isNull);
-      }
+      expect(closerWeakRef.target, isNull);
+    });
+
+    test('closer.close remove all references by subcription', () async {
+      final closerWeakRef = createAndInit(andClose: true);
+
+      await forceGC();
+      expect(streamController.hasListener, isFalse);
+      expect(closerWeakRef.target, isNull);
     });
   });
 }

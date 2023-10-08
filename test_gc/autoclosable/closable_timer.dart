@@ -5,6 +5,8 @@ import 'package:autoclose/test_utils/force_gc.dart';
 import 'package:autoclose/test_utils/test_closer.dart';
 import 'package:test/test.dart';
 
+import 'closable_subscription.dart';
+
 final List<WeakReference> refsThatShouldBeCleared = [];
 
 class TimerTestCloser extends TestCloser {
@@ -22,27 +24,26 @@ class TimerTestCloser extends TestCloser {
     // function used to not hold the hard link to closer
     final closer = TimerTestCloser();
     closer.timerWeakRef = WeakReference(closer.init());
-    closer.close();
     return WeakReference(closer);
   }
 }
 
 void testClosableTimer() {
   group('ClosableTimer', () {
+    test('timer keeps ref', () async {
+      final closerWeakRef = TimerTestCloser.createAndInit();
+      refsThatShouldBeCleared.add(closerWeakRef);
+
+      await forceGC();
+      expect(closerWeakRef.target, isNotNull);
+    });
     test('closer.close cancels timer', () async {
       final closerWeakRef = TimerTestCloser.createAndInit();
       refsThatShouldBeCleared.add(closerWeakRef);
 
-      closerWeakRef.target?.close();
+      indirectionalWeakRefClose(closerWeakRef);
       await forceGC();
-      expect(closerWeakRef.target?.timerWeakRef.target, isNull);
-    });
-    test('closer ref was closed after previos test closure closed', () async {
-      await forceGC();
-      expect(refsThatShouldBeCleared, isNotEmpty);
-      for (final ref in refsThatShouldBeCleared) {
-        expect(ref.target, isNull);
-      }
+      expect(closerWeakRef.target, isNull);
     });
   });
 }
