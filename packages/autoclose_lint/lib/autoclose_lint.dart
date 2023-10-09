@@ -44,10 +44,6 @@ PluginBase createPlugin() => AutoCloseLinter({
         ),
         ClosableLintConfig(
           closableTargetUrl:
-              'package:flutter/src/foundation/change_notifier.dart#Listenable',
-        ),
-        ClosableLintConfig(
-          closableTargetUrl:
               'package:flutter/src/widgets/scroll_activity.dart#ScrollDragController',
         ),
         ClosableLintConfig(
