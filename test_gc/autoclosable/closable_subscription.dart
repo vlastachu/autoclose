@@ -39,7 +39,7 @@ WeakReference<SubscriptionTestCloser> createAndInit({required bool andClose}) {
   return WeakReference(closer);
 }
 
-// TODO replace to utils 
+// TODO replace to utils
 @pragma('vm:never-inline')
 void indirectionalWeakRefClose(WeakReference<TestCloser> closer) {
   closer.target?.close();
@@ -70,7 +70,7 @@ void testClosableSubscription() {
       expect(streamController.hasListener, isFalse);
       expect(closerWeakRef.target, isNotNull);
 
-      // just check my observation how dart GC works: 
+      // just check my observation how dart GC works:
       // closer.target?.close(); // <-- uncomment will cause keeping reference by ... whatever ... compiler optimizations
       indirectionalWeakRefClose(closerWeakRef);
       await forceGC();

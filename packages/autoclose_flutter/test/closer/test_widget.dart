@@ -9,7 +9,8 @@ class TestWidget extends StatefulWidget {
   TestWidgetState createState() => TestWidgetState();
 }
 
-class TestWidgetState extends State<TestWidget> with CloserWidgetState<TestWidget> {
+class TestWidgetState extends State<TestWidget>
+    with CloserWidgetState<TestWidget> {
   @override
   Widget build(BuildContext context) {
     return TextField(controller: widget.controller);

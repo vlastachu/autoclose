@@ -46,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> with CloserWidgetState {
     //// 1expect_lint: stream_subscription_assignment_unhandled
     // final vv = StreamSubscription();
     // final vv1 = vv ?? StreamSubscription()
-     // ..closeWith(this);
+    // ..closeWith(this);
     stream.listen((event) {}).closeWith(this);
 
     super.initState();

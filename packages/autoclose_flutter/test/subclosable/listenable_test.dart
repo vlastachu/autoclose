@@ -89,7 +89,8 @@ void main() {
       });
       controller.closeWith(state);
       await widgetTester.pumpWidget(Container());
-      expect(closedQueue.length, equals(2), reason: 'both listeners should be removed');
+      expect(closedQueue.length, equals(2),
+          reason: 'both listeners should be removed');
       expect(closedQueue, equals([1, 2]), reason: 'preserve remove order');
     });
 

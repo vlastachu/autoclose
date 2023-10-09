@@ -36,7 +36,7 @@ void main() {
       final widgetWeakRef = await createWidgetAndSubscribeToChangeNotifier(
           widgetTester,
           andClose: true);
-          shouldBeNull = widgetWeakRef;
+      shouldBeNull = widgetWeakRef;
       // expect(widgetWeakRef, isNull);
     });
     testWidgets(
@@ -45,7 +45,7 @@ void main() {
       final widgetWeakRef = await createWidgetAndSubscribeToChangeNotifier(
           widgetTester,
           andClose: false);
-          shouldBeNotNull = widgetWeakRef;
+      shouldBeNotNull = widgetWeakRef;
       // expect(widgetWeakRef, isNotNull);
     });
     test('Check our weak refs', () async {
@@ -64,9 +64,10 @@ Future<WeakReference<Widget>> createWidgetAndSubscribeToChangeNotifier(
   // expect_lint: change_notifier_assignment_unhandled
   final controller = TextEditingController();
   final widget = TestWidget(controller: controller);
-  
+
   await widgetTester.pumpWidget(widget);
-  final widgetWeakRef = WeakReference(widgetTester.widget(find.byType(TextField).first));
+  final widgetWeakRef =
+      WeakReference(widgetTester.widget(find.byType(TextField).first));
   final TestWidgetState state = widgetTester.state(find.byWidget(widget));
 
   // controller.addListener(() {
@@ -75,7 +76,10 @@ Future<WeakReference<Widget>> createWidgetAndSubscribeToChangeNotifier(
   // });
 
   if (andClose) {
-    controller.closeWith(state, doOnClose: () => print('pomogite'),);
+    controller.closeWith(
+      state,
+      doOnClose: () => print('pomogite'),
+    );
   }
   await widgetTester.pumpWidget(Container());
   return widgetWeakRef;

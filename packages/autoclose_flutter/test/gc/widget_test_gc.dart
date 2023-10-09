@@ -6,8 +6,11 @@ import 'package:flutter_test/flutter_test.dart';
 import '../closer/test_widget.dart';
 
 void main() {
-  testWidgets('GC will keep link to widget if connected to change notifier', (widgetTester) async {
-    final widgetWeakRef = await createWidgetAndSubscribeToChangeNotifier(widgetTester, andClose: false);
+  testWidgets('GC will keep link to widget if connected to change notifier',
+      (widgetTester) async {
+    final widgetWeakRef = await createWidgetAndSubscribeToChangeNotifier(
+        widgetTester,
+        andClose: false);
     expect(widgetWeakRef, isNotNull);
   });
 }
