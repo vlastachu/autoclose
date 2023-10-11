@@ -4,46 +4,62 @@ import 'package:autoclose/test_utils/test_closer.dart';
 import 'package:test/test.dart';
 
 class FutureTestCloser extends TestCloser {
-  late WeakReference<Future<dynamic>> futureWeakRef;
   FutureTestCloser();
 
   // method to just catch reference on `this`
   void doAnything() {}
 
-  Future<dynamic> init() async {
-    final someValue = await Future.delayed(Duration(hours: 1)).closeWith(this);
+  Future<dynamic> init(Future<dynamic> future) async {
+    final someValue = await future.closeWith(this);
     doAnything();
     return someValue;
   }
 }
 
 @pragma('vm:never-inline')
-WeakReference<FutureTestCloser> createAndInit({required bool andClose}) {
+(
+  WeakReference<FutureTestCloser>,
+  WeakReference<Future<dynamic>>,
+  WeakReference<Future<dynamic>>
+) createAndInit({required bool andClose}) {
   // function used to not hold the hard link to closer
+  final outerFuture = Future.delayed(Duration(hours: 1));
   final closer = FutureTestCloser();
-  closer.futureWeakRef = WeakReference(closer.init());
+  final closerFuture = closer.init(outerFuture);
   if (andClose) {
     closer.close();
   }
-  return WeakReference(closer);
+  return (
+    WeakReference(closer),
+    WeakReference(closerFuture),
+    WeakReference(outerFuture)
+  );
 }
 
 void testClosableFuture() {
   group('ClosableFuture', () {
     test('waiting for the future prevents you from releasing the ref',
         () async {
-      final closerWeakRef = createAndInit(andClose: false);
+      final (closerWeakRef, closerFutureWeakRef, outerFutureWeakRef) =
+          createAndInit(andClose: false);
       await forceGC();
       expect(closerWeakRef.target, isNotNull);
+      expect(closerFutureWeakRef.target, isNotNull);
+      expect(outerFutureWeakRef.target, isNotNull);
     });
     test('closer.close cancels future waiting', () async {
-      final closerWeakRef = createAndInit(andClose: true);
+      final (closerWeakRef, closerFutureWeakRef, outerFutureWeakRef) =
+          createAndInit(andClose: true);
 
       // if you uncomment this line then closerWeakRef.target will be not null
       // closerWeakRef.target?.close();
       // that's brings up a lot of different thoughts
+
       await forceGC();
       expect(closerWeakRef.target, isNull);
+      expect(closerFutureWeakRef.target, isNull);
+      // we are not going to (and actually can not) cancel future from outside
+      expect(outerFutureWeakRef.target, isNotNull);
     });
   });
 }
