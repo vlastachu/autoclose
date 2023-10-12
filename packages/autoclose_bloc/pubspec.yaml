@@ -1,7 +1,8 @@
 name: autoclose_bloc
-description: A starting point for Dart libraries or applications.
+description: autoclose_bloc is a package providing AutoClose functionality for the Bloc
 version: 1.0.0
-# repository: https://github.com/my_org/my_repo
+repository: https://github.com/vlastachu/autoclose
+issue_tracker: https://github.com/vlastachu/autoclose/issues
 
 environment:
   sdk: '>=2.19.3 <3.0.0'
