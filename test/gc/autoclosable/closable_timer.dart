@@ -5,7 +5,7 @@ import 'package:autoclose/test_utils/force_gc.dart';
 import 'package:autoclose/test_utils/test_closer.dart';
 import 'package:test/test.dart';
 
-import 'closable_subscription.dart';
+import '../utils/indirectional_weak_ref_close.dart';
 
 final List<WeakReference> refsThatShouldBeCleared = [];
 

@@ -5,6 +5,8 @@ import 'package:autoclose/test_utils/force_gc.dart';
 import 'package:autoclose/test_utils/test_closer.dart';
 import 'package:test/test.dart';
 
+import '../utils/indirectional_weak_ref_close.dart';
+
 StreamController streamController = StreamController.broadcast();
 Stream stream = streamController.stream;
 
@@ -39,11 +41,6 @@ WeakReference<SubscriptionTestCloser> createAndInit({required bool andClose}) {
   return WeakReference(closer);
 }
 
-// TODO(vlastachu): replace to utils
-@pragma('vm:never-inline')
-void indirectionalWeakRefClose(WeakReference<TestCloser> closer) {
-  closer.target?.close();
-}
 
 void testClosableSubscription() {
   group('ClosableSubscription', () {
