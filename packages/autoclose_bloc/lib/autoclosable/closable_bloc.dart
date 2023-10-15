@@ -4,7 +4,7 @@ import 'package:autoclose/autoclosable/autoclosable.dart';
 import 'package:autoclose/closer/has_closer.dart';
 import 'package:bloc/bloc.dart';
 
-class ClosableBloc extends AutoClosable<Closable> {
+class ClosableBloc extends SingleAutoClosable<Closable> {
   ClosableBloc(super.closable, super.onClose);
 
   @override

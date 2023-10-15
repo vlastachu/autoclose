@@ -2,7 +2,7 @@ import 'package:autoclose/autoclosable/autoclosable.dart';
 import 'package:autoclose/closer/has_closer.dart';
 import 'package:flutter/material.dart';
 
-class ClosableInkFeature extends AutoClosable<InkFeature> {
+class ClosableInkFeature extends SingleAutoClosable<InkFeature> {
   ClosableInkFeature(super.closable, super.onClose);
 
   @override

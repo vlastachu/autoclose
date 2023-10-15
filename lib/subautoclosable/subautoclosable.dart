@@ -5,7 +5,7 @@ import 'package:autoclose/generic_autoclosable/generic_autoclosable.dart';
 /// `listenable.addListener(listener);` has corresponding closing method `listenable.removeListener(listener);`
 /// With autoclosable lib it rewrites to `listenable.addListenerWithCloser(closer, listener);`
 abstract class SubAutoClosable<Closable, SubClosable>
-    extends GenericAutoClosable {
+    extends AutoClosable {
   final Closable closable;
   final SubClosable subClosable;
   @override

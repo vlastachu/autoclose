@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:autoclose/autoclosable/autoclosable.dart';
 import 'package:autoclose/closer/has_closer.dart';
 
-class ClosableTimer extends AutoClosable<Timer> {
+class ClosableTimer extends SingleAutoClosable<Timer> {
   ClosableTimer(super.closable, super.onClose);
 
   @override

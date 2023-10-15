@@ -2,7 +2,7 @@ import 'package:autoclose/autoclosable/autoclosable.dart';
 import 'package:autoclose/closer/has_closer.dart';
 import 'package:flutter/foundation.dart';
 
-class ClosableChangeNotifier extends AutoClosable<ChangeNotifier> {
+class ClosableChangeNotifier extends SingleAutoClosable<ChangeNotifier> {
   ClosableChangeNotifier(super.closable, super.onClose);
 
   @override

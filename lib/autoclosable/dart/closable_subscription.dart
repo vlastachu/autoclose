@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:autoclose/autoclosable/autoclosable.dart';
 import 'package:autoclose/closer/has_closer.dart';
 
-class ClosableSubscription extends AutoClosable<StreamSubscription> {
+class ClosableSubscription extends SingleAutoClosable<StreamSubscription> {
   ClosableSubscription(super.closable, super.onClose);
 
   @override

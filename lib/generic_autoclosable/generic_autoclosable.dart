@@ -6,7 +6,7 @@ import 'dart:async';
 /// See also:
 /// - [package:autoclose/closer/closer#Closer.addClosable]: Method to add closable entity to handle its 
 /// closing when [package:autoclose/closer/closer#Closer.onClose] called
-abstract class GenericAutoClosable {
+abstract class AutoClosable {
   /// A callback function that can be provided to perform custom actions when
   /// the associated entity is closed. This function is executed *after* [close]
   /// is called. If [close] is Future, then it will be awaited and called onClose.
@@ -14,7 +14,7 @@ abstract class GenericAutoClosable {
   /// Example:
   ///
   /// ```dart
-  /// AutoClosable(controller, () {
+  /// SingleAutoClosable(controller, () {
   ///   // Custom actions to be performed when the controller is closed.
   /// });
   /// ```

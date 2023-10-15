@@ -10,7 +10,7 @@ import '../closer/test_widget.dart';
 import 'change_notifier.mocks.dart';
 
 void main() {
-  group('ChangeNotifier (AutoClosable)', () {
+  group('ChangeNotifier (SingleAutoClosable)', () {
     test(
         'ChangeNotifier disposed twice throws an exception',
         () => expect(() {

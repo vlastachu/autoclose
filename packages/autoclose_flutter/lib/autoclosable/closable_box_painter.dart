@@ -2,7 +2,7 @@ import 'package:autoclose/autoclosable/autoclosable.dart';
 import 'package:autoclose/closer/has_closer.dart';
 import 'package:flutter/widgets.dart';
 
-class ClosableBoxPainter extends AutoClosable<BoxPainter> {
+class ClosableBoxPainter extends SingleAutoClosable<BoxPainter> {
   ClosableBoxPainter(super.closable, super.onClose);
 
   @override

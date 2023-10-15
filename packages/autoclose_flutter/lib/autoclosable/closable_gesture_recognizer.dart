@@ -2,7 +2,7 @@ import 'package:autoclose/autoclosable/autoclosable.dart';
 import 'package:autoclose/closer/has_closer.dart';
 import 'package:flutter/gestures.dart';
 
-class ClosableGestureRecognizer extends AutoClosable<GestureRecognizer> {
+class ClosableGestureRecognizer extends SingleAutoClosable<GestureRecognizer> {
   ClosableGestureRecognizer(super.closable, super.onClose);
 
   @override

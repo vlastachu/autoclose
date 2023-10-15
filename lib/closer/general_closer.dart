@@ -4,17 +4,17 @@ import 'package:autoclose/generic_autoclosable/generic_autoclosable.dart';
 import 'package:autoclose/subautoclosable/subautoclosable.dart';
 
 class GeneralCloser implements Closer {
-  /// AutoClosable instances which already attached to their Closer's
-  static final Set<AutoClosable> attachedAutoclosables = {};
+  /// SingleAutoClosable instances which already attached to their Closer's
+  static final Set<SingleAutoClosable> attachedAutoclosables = {};
   static final Set<SubAutoClosable> attachedSubAutoclosables = {};
 
-  final List<AutoClosable> closables = [];
+  final List<SingleAutoClosable> closables = [];
 
   /// subClosables list have higher priority
   final List<SubAutoClosable> subClosables = [];
 
   @override
-  void addClosable(AutoClosable closable) {
+  void addClosable(SingleAutoClosable closable) {
     if (!attachedAutoclosables.contains(closable)) {
       attachedAutoclosables.add(closable);
       closables.add(closable);
@@ -35,8 +35,8 @@ class GeneralCloser implements Closer {
     genericClearClosables(closables, attachedAutoclosables);
   }
 
-  void genericClearClosables(List<GenericAutoClosable> genericClosables,
-      Set<GenericAutoClosable> genericAttachedSet) {
+  void genericClearClosables(List<AutoClosable> genericClosables,
+      Set<AutoClosable> genericAttachedSet) {
     for (final closable in genericClosables) {
       if (closable.isClosed != true) {
         _callCloser(closable);
@@ -47,7 +47,7 @@ class GeneralCloser implements Closer {
     genericClosables.clear();
   }
 
-  void _callCloser(GenericAutoClosable closable) async {
+  void _callCloser(AutoClosable closable) async {
     await closable.close();
     final onClose = closable.onClose;
     if (onClose != null) {

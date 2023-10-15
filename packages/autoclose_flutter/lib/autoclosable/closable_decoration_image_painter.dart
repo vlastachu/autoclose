@@ -3,7 +3,7 @@ import 'package:autoclose/closer/has_closer.dart';
 import 'package:flutter/material.dart';
 
 class ClosableDecorationImagePainter
-    extends AutoClosable<DecorationImagePainter> {
+    extends SingleAutoClosable<DecorationImagePainter> {
   ClosableDecorationImagePainter(super.closable, super.onClose);
 
   @override

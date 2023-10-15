@@ -5,7 +5,7 @@ import 'package:autoclose/autoclosable/autoclosable.dart';
 import 'package:autoclose/closer/closer.dart';
 import 'package:autoclose/closer/has_closer.dart';
 
-class _ClosableFuture<T> extends AutoClosable<Future<T>> {
+class _ClosableFuture<T> extends SingleAutoClosable<Future<T>> {
   final CancelableOperation<T> cancelableOperation;
 
   _ClosableFuture(Future<T> future, {void Function()? doOnClose})
@@ -25,7 +25,7 @@ class _ClosableFuture<T> extends AutoClosable<Future<T>> {
 /// An extension on the [Future] class that allows you to 
 /// manage its lifecycle with a [HasCloser]'s Closer.
 /// This extension simplifies the process of adding
-/// a [Future] to a [Closer] while hiding the AutoClosable implementation details.
+/// a [Future] to a [Closer] while hiding the SingleAutoClosable implementation details.
 extension FutureClose<T> on Future<T> {
   /// Associates the [Future] with a [Closer] and adds it for management. You can
   /// provide an optional [doOnClose] callback function to define custom actions

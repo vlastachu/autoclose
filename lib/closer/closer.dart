@@ -1,10 +1,10 @@
 import 'package:autoclose/autoclosable/autoclosable.dart';
 import 'package:autoclose/subautoclosable/subautoclosable.dart';
 
-/// contains collection of AutoClosable instances
+/// contains collection of SingleAutoClosable instances
 /// and handle their close with its own lifecycle period
 abstract class Closer {
-  void addClosable(AutoClosable closable);
+  void addClosable(SingleAutoClosable closable);
   void addSubClosable(SubAutoClosable closable);
   void onClose();
 }

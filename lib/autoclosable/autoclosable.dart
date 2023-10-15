@@ -4,14 +4,14 @@ import 'package:meta/meta.dart';
 /// Represents entities which able to (and should be) close
 /// This class descendant designed for the simple case of a single entity
 @immutable
-abstract class AutoClosable<T> extends GenericAutoClosable {
-  /// The closable entity that this [AutoClosable] instance is associated with.
+abstract class SingleAutoClosable<T> extends AutoClosable {
+  /// The closable entity that this [SingleAutoClosable] instance is associated with.
   final T closable;
 
   @override
   final void Function()? onClose;
 
-  /// Creates an [AutoClosable] instance to manage the termination and cleanup
+  /// Creates an [SingleAutoClosable] instance to manage the termination and cleanup
   /// of a specified closable entity.
   ///
   /// The [closable] parameter represents the entity that should be closed when
@@ -22,15 +22,15 @@ abstract class AutoClosable<T> extends GenericAutoClosable {
   /// Example usage:
   ///
   /// ```dart
-  /// AutoClosable(controller, () {
+  /// SingleAutoClosable(controller, () {
   ///   // Custom actions to be performed when the controller is closed.
   /// });
   /// ```
-  AutoClosable(this.closable, this.onClose);
+  SingleAutoClosable(this.closable, this.onClose);
 
   @override
   bool operator ==(dynamic other) =>
-      other is AutoClosable && closable == other.closable;
+      other is SingleAutoClosable && closable == other.closable;
 
   @override
   int get hashCode => closable.hashCode;

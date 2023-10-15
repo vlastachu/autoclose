@@ -2,7 +2,7 @@ import 'package:autoclose/autoclosable/autoclosable.dart';
 import 'package:autoclose/closer/has_closer.dart';
 import 'package:flutter/scheduler.dart';
 
-class ClosableTicker extends AutoClosable<Ticker> {
+class ClosableTicker extends SingleAutoClosable<Ticker> {
   ClosableTicker(super.closable, super.onClose);
 
   @override

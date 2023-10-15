@@ -2,7 +2,7 @@ import 'package:autoclose/autoclosable/autoclosable.dart';
 import 'package:autoclose/closer/has_closer.dart';
 import 'package:flutter/widgets.dart';
 
-class ClosableAnimationController extends AutoClosable<AnimationController> {
+class ClosableAnimationController extends SingleAutoClosable<AnimationController> {
   ClosableAnimationController(super.closable, super.onClose);
 
   @override
