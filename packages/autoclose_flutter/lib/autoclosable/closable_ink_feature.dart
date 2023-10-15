@@ -1,5 +1,4 @@
-import 'package:autoclose/autoclosable/autoclosable.dart';
-import 'package:autoclose/closer/has_closer.dart';
+import 'package:autoclose/autoclose.dart';
 import 'package:flutter/material.dart';
 
 class ClosableInkFeature extends SingleAutoClosable<InkFeature> {
@@ -15,7 +14,7 @@ class ClosableInkFeature extends SingleAutoClosable<InkFeature> {
 }
 
 extension InkFeatureClose on InkFeature {
-  void closeWith(HasCloser hasCloser, {void Function()? doOnClose}) {
-    hasCloser.closer.addClosable(ClosableInkFeature(this, doOnClose));
+  void closeWith(HasCloser hasCloser, {void Function()? onClose}) {
+    hasCloser.closer.addClosable(ClosableInkFeature(this, onClose));
   }
 }

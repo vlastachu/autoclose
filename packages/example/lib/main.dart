@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:autoclose/autoclose.dart';
 import 'package:autoclose_flutter/autoclose_flutter.dart';
-import 'package:autoclose_flutter/subautoclosable/closable_listenable.dart';
 import 'package:flutter/material.dart';
 
 void main() {

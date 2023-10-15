@@ -16,9 +16,9 @@ class ClosableListenable extends SubAutoClosable<Listenable, VoidCallback> {
 
 extension ListenableClose on Listenable {
   void addListenerWithCloser(HasCloser hasCloser, VoidCallback listener,
-      {void Function()? doOnClose}) {
+      {void Function()? onClose}) {
     addListener(listener);
     hasCloser.closer
-        .addSubClosable(ClosableListenable(this, listener, doOnClose));
+        .addSubClosable(ClosableListenable(this, listener, onClose));
   }
 }

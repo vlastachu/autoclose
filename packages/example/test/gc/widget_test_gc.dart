@@ -6,13 +6,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'utils.dart';
 
-class MyFocusNode extends FocusNode {
-  @override
-  void dispose() {
-    super.dispose();
-  }
-}
-
 class TestWidget extends StatefulWidget {
   final FocusNode? focusNode;
   const TestWidget({super.key, this.focusNode});
@@ -87,7 +80,7 @@ Future<List<WeakReference>> createWidgetAndSubscribeToChangeNotifier(
     WidgetTester widgetTester,
     {required bool andClose}) async {
   // expect_lint: change_notifier_assignment_unhandled
-  final focusNode = MyFocusNode();
+  final focusNode = FocusNode();
   final widget = TestWidget(focusNode: focusNode);
 
   await widgetTester.pumpWidget(widget);
@@ -103,7 +96,8 @@ Future<List<WeakReference>> createWidgetAndSubscribeToChangeNotifier(
   if (andClose) {
     focusNode.closeWith(
       state,
-      doOnClose: () => print('pomogite'),
+      // ignore: avoid_print
+      onClose: () => print('help'),
     );
   }
   await widgetTester.pumpWidget(Container());

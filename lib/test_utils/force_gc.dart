@@ -1,12 +1,15 @@
 import 'dart:developer';
 import 'dart:isolate';
+// ignore: depend_on_referenced_packages
 import 'package:vm_service/vm_service_io.dart';
 
-// thanks to julemand101 https://stackoverflow.com/a/63730430
+/// used to run gc's garbage collection
+/// thanks to julemand101 https://stackoverflow.com/a/63730430
 Future<void> forceGC() async {
   final serverUri = (await Service.getInfo()).serverUri;
 
   if (serverUri == null) {
+    // ignore: avoid_print
     print('Please run the application with the --observe parameter!');
     return;
   }
@@ -19,9 +22,9 @@ Future<void> forceGC() async {
 List<String> _cleanupPathSegments(Uri uri) {
   final pathSegments = <String>[];
   if (uri.pathSegments.isNotEmpty) {
-    pathSegments.addAll(uri.pathSegments.where(
-      (s) => s.isNotEmpty,
-    ));
+    pathSegments.addAll(
+      uri.pathSegments.where((s) => s.isNotEmpty),
+    );
   }
   return pathSegments;
 }

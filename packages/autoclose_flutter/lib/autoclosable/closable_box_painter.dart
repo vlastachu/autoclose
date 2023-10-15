@@ -1,5 +1,4 @@
-import 'package:autoclose/autoclosable/autoclosable.dart';
-import 'package:autoclose/closer/has_closer.dart';
+import 'package:autoclose/autoclose.dart';
 import 'package:flutter/widgets.dart';
 
 class ClosableBoxPainter extends SingleAutoClosable<BoxPainter> {
@@ -15,7 +14,7 @@ class ClosableBoxPainter extends SingleAutoClosable<BoxPainter> {
 }
 
 extension BoxPainterClose on BoxPainter {
-  void closeWith(HasCloser hasCloser, {void Function()? doOnClose}) {
-    hasCloser.closer.addClosable(ClosableBoxPainter(this, doOnClose));
+  void closeWith(HasCloser hasCloser, {void Function()? onClose}) {
+    hasCloser.closer.addClosable(ClosableBoxPainter(this, onClose));
   }
 }

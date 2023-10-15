@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:autoclose/autoclosable/autoclosable.dart';
-import 'package:autoclose/closer/has_closer.dart';
+import 'package:autoclose/autoclose.dart';
 import 'package:bloc/bloc.dart';
 
 class ClosableBloc extends SingleAutoClosable<Closable> {
@@ -17,7 +16,7 @@ class ClosableBloc extends SingleAutoClosable<Closable> {
 }
 
 extension BlocClose on Closable {
-  void closeWith(HasCloser hasCloser, {void Function()? doOnClose}) {
-    hasCloser.closer.addClosable(ClosableBloc(this, doOnClose));
+  void closeWith(HasCloser hasCloser, {void Function()? onClose}) {
+    hasCloser.closer.addClosable(ClosableBloc(this, onClose));
   }
 }

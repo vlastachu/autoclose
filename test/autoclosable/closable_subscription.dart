@@ -20,16 +20,19 @@ void testClosableSubscription() {
       verify(subscription.cancel()).called(1);
     });
     test('calling `cancel` twice doesn\'t produce exceptions', () async {
-      expect(() {
-        final closer = TestCloser();
-        final subscription =
-            Stream<int>.periodic(const Duration(seconds: 1), (x) => x)
-                .listen((event) {});
+      expect(
+        () {
+          final closer = TestCloser();
+          final subscription =
+              Stream<int>.periodic(const Duration(seconds: 1), (x) => x)
+                  .listen((event) {});
 
-        subscription.closeWith(closer);
-        subscription.cancel();
-        closer.close();
-      }, returnsNormally);
+          subscription.closeWith(closer);
+          subscription.cancel();
+          closer.close();
+        },
+        returnsNormally,
+      );
     });
     test('multiple closer.close calls `cancel` once', () async {
       final closer1 = TestCloser();

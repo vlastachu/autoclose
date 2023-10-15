@@ -1,5 +1,4 @@
-import 'package:autoclose/autoclosable/autoclosable.dart';
-import 'package:autoclose/closer/has_closer.dart';
+import 'package:autoclose/autoclose.dart';
 import 'package:flutter/widgets.dart';
 
 class ClosableScrollDragController extends SingleAutoClosable<ScrollDragController> {
@@ -15,7 +14,7 @@ class ClosableScrollDragController extends SingleAutoClosable<ScrollDragControll
 }
 
 extension ScrollDragControllerClose on ScrollDragController {
-  void closeWith(HasCloser hasCloser, {void Function()? doOnClose}) {
-    hasCloser.closer.addClosable(ClosableScrollDragController(this, doOnClose));
+  void closeWith(HasCloser hasCloser, {void Function()? onClose}) {
+    hasCloser.closer.addClosable(ClosableScrollDragController(this, onClose));
   }
 }

@@ -18,9 +18,9 @@ class ClosableWidgetsBinding
 extension WidgetsBindingClose on WidgetsBinding {
   void addObserverWithCloser(
       HasCloser hasCloser, WidgetsBindingObserver observer,
-      {void Function()? doOnClose}) {
+      {void Function()? onClose}) {
     addObserver(observer);
     hasCloser.closer
-        .addSubClosable(ClosableWidgetsBinding(this, observer, doOnClose));
+        .addSubClosable(ClosableWidgetsBinding(this, observer, onClose));
   }
 }

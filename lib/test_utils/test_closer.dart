@@ -15,4 +15,6 @@ mixin _CloserAbstractTestCloser on _AbstractTestCloser implements HasCloser {
   }
 }
 
+/// pure autoclose package has no [Closer] implementations so we have to create
+/// own to test closables
 class TestCloser extends _AbstractTestCloser with _CloserAbstractTestCloser {}

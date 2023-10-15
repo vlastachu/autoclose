@@ -1,5 +1,4 @@
-import 'package:autoclose/autoclosable/autoclosable.dart';
-import 'package:autoclose/closer/has_closer.dart';
+import 'package:autoclose/autoclose.dart';
 import 'package:flutter/material.dart';
 
 class ClosableDecorationImagePainter
@@ -16,8 +15,8 @@ class ClosableDecorationImagePainter
 }
 
 extension DecorationImagePainterClose on DecorationImagePainter {
-  void closeWith(HasCloser hasCloser, {void Function()? doOnClose}) {
+  void closeWith(HasCloser hasCloser, {void Function()? onClose}) {
     hasCloser.closer
-        .addClosable(ClosableDecorationImagePainter(this, doOnClose));
+        .addClosable(ClosableDecorationImagePainter(this, onClose));
   }
 }

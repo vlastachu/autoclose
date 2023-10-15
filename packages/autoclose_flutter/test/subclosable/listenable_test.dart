@@ -63,10 +63,10 @@ void main() {
       final TestWidgetState state = widgetTester.state(find.byWidget(widget));
 
       final controller = TextEditingController();
-      controller.addListenerWithCloser(state, listener, doOnClose: () {
+      controller.addListenerWithCloser(state, listener, onClose: () {
         closedQueue.add(1);
       });
-      controller.addListenerWithCloser(state, listener, doOnClose: () {
+      controller.addListenerWithCloser(state, listener, onClose: () {
         closedQueue.add(2);
       });
       controller.closeWith(state);
@@ -81,10 +81,10 @@ void main() {
 
       final controller = TextEditingController();
 
-      controller.addListenerWithCloser(state, listener, doOnClose: () {
+      controller.addListenerWithCloser(state, listener, onClose: () {
         closedQueue.add(1);
       });
-      controller.addListenerWithCloser(state, listener2, doOnClose: () {
+      controller.addListenerWithCloser(state, listener2, onClose: () {
         closedQueue.add(2);
       });
       controller.closeWith(state);
@@ -103,12 +103,12 @@ void main() {
 
       TextEditingController()
         ..closeWith(state)
-        ..addListenerWithCloser(state, listener, doOnClose: () {
+        ..addListenerWithCloser(state, listener, onClose: () {
           closedQueue.add(1);
         });
       FocusNode()
         ..closeWith(state)
-        ..addListenerWithCloser(state, listener2, doOnClose: () {
+        ..addListenerWithCloser(state, listener2, onClose: () {
           closedQueue.add(2);
         });
 

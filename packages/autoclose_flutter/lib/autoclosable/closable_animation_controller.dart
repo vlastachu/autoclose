@@ -1,5 +1,4 @@
-import 'package:autoclose/autoclosable/autoclosable.dart';
-import 'package:autoclose/closer/has_closer.dart';
+import 'package:autoclose/autoclose.dart';
 import 'package:flutter/widgets.dart';
 
 class ClosableAnimationController extends SingleAutoClosable<AnimationController> {
@@ -15,7 +14,7 @@ class ClosableAnimationController extends SingleAutoClosable<AnimationController
 }
 
 extension AnimationControllerClose on AnimationController {
-  void closeWith(HasCloser hasCloser, {void Function()? doOnClose}) {
-    hasCloser.closer.addClosable(ClosableAnimationController(this, doOnClose));
+  void closeWith(HasCloser hasCloser, {void Function()? onClose}) {
+    hasCloser.closer.addClosable(ClosableAnimationController(this, onClose));
   }
 }

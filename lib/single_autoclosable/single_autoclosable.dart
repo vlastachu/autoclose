@@ -18,14 +18,6 @@ abstract class SingleAutoClosable<T> extends AutoClosable {
   /// necessary, such as a stream subscription or a resource. The [onClose]
   /// parameter is an optional callback function that can be used to define
   /// custom actions to be performed when the [closable] entity is closed.
-  ///
-  /// Example usage:
-  ///
-  /// ```dart
-  /// SingleAutoClosable(controller, () {
-  ///   // Custom actions to be performed when the controller is closed.
-  /// });
-  /// ```
   SingleAutoClosable(this.closable, this.onClose);
 
   @override

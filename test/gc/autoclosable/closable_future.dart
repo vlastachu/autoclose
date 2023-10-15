@@ -23,8 +23,10 @@ class FutureTestCloser extends TestCloser {
   WeakReference<Future<dynamic>>
 ) createAndInit({required bool andClose}) {
   // function used to not hold the hard link to closer
-  final outerFuture = Future.delayed(Duration(hours: 1));
+  final outerFuture = Future.delayed(const Duration(hours: 1));
   final closer = FutureTestCloser();
+  // need future there
+  // ignore: discarded_futures 
   final closerFuture = closer.init(outerFuture);
   if (andClose) {
     closer.close();

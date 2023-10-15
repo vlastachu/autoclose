@@ -1,5 +1,4 @@
-import 'package:autoclose/autoclosable/autoclosable.dart';
-import 'package:autoclose/closer/has_closer.dart';
+import 'package:autoclose/autoclose.dart';
 import 'package:flutter/gestures.dart';
 
 class ClosableGestureRecognizer extends SingleAutoClosable<GestureRecognizer> {
@@ -15,7 +14,7 @@ class ClosableGestureRecognizer extends SingleAutoClosable<GestureRecognizer> {
 }
 
 extension GestureRecognizerClose on GestureRecognizer {
-  void closeWith(HasCloser hasCloser, {void Function()? doOnClose}) {
-    hasCloser.closer.addClosable(ClosableGestureRecognizer(this, doOnClose));
+  void closeWith(HasCloser hasCloser, {void Function()? onClose}) {
+    hasCloser.closer.addClosable(ClosableGestureRecognizer(this, onClose));
   }
 }

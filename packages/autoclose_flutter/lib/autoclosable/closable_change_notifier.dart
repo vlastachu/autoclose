@@ -1,5 +1,4 @@
-import 'package:autoclose/autoclosable/autoclosable.dart';
-import 'package:autoclose/closer/has_closer.dart';
+import 'package:autoclose/autoclose.dart';
 import 'package:flutter/foundation.dart';
 
 class ClosableChangeNotifier extends SingleAutoClosable<ChangeNotifier> {
@@ -15,7 +14,7 @@ class ClosableChangeNotifier extends SingleAutoClosable<ChangeNotifier> {
 }
 
 extension ChangeNotifierClose on ChangeNotifier {
-  void closeWith(HasCloser hasCloser, {void Function()? doOnClose}) {
-    hasCloser.closer.addClosable(ClosableChangeNotifier(this, doOnClose));
+  void closeWith(HasCloser hasCloser, {void Function()? onClose}) {
+    hasCloser.closer.addClosable(ClosableChangeNotifier(this, onClose));
   }
 }

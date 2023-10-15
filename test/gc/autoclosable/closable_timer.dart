@@ -17,7 +17,7 @@ class TimerTestCloser extends TestCloser {
   void doAnything() {}
 
   Timer init() {
-    return Timer(Duration(hours: 1), doAnything)..closeWith(this);
+    return Timer(const Duration(hours: 1), doAnything)..closeWith(this);
   }
 
   static WeakReference<TimerTestCloser> createAndInit() {

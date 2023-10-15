@@ -1,5 +1,4 @@
-import 'package:autoclose/autoclosable/autoclosable.dart';
-import 'package:autoclose/closer/has_closer.dart';
+import 'package:autoclose/autoclose.dart';
 import 'package:flutter/scheduler.dart';
 
 class ClosableTicker extends SingleAutoClosable<Ticker> {
@@ -15,7 +14,7 @@ class ClosableTicker extends SingleAutoClosable<Ticker> {
 }
 
 extension TickerClose on Ticker {
-  void closeWith(HasCloser hasCloser, {void Function()? doOnClose}) {
-    hasCloser.closer.addClosable(ClosableTicker(this, doOnClose));
+  void closeWith(HasCloser hasCloser, {void Function()? onClose}) {
+    hasCloser.closer.addClosable(ClosableTicker(this, onClose));
   }
 }

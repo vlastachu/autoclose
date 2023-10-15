@@ -36,8 +36,7 @@ void testClosableFuture() {
         await Future.delayed(const Duration(milliseconds: 1)).closeWith(closer);
         mocked.someMethod();
       }
-
-      future();
+      unawaited(future());
       closer.close();
       await Future.delayed(const Duration(milliseconds: 100));
       verifyNever(mocked.someMethod());
@@ -59,12 +58,12 @@ void testClosableFuture() {
       verify(mocked.someMethod()).called(1);
     });
 
-    test('doOnClose will not be called if future completes normally', () async {
+    test('onClose will not be called if future completes normally', () async {
       final closer = TestCloser();
       bool completed = false;
       bool doOnCloseCalled = false;
       Future<void> future() async {
-        await Future.delayed(const Duration(milliseconds: 1)).closeWith(closer, doOnClose: () {
+        await Future.delayed(const Duration(milliseconds: 1)).closeWith(closer, onClose: () {
           doOnCloseCalled = true;
         },);
         completed = true;
@@ -76,12 +75,12 @@ void testClosableFuture() {
       expect(completed, isTrue);
       expect(doOnCloseCalled, isFalse);
     });
-    test('doOnClose will be called if future is cancelled by closer', () async {
+    test('onClose will be called if future is cancelled by closer', () async {
       final closer = TestCloser();
       bool completed = false;
       bool doOnCloseCalled = false;
       Future<void> future() async {
-        await Future.delayed(const Duration(milliseconds: 1)).closeWith(closer, doOnClose: () {
+        await Future.delayed(const Duration(milliseconds: 1)).closeWith(closer, onClose: () {
           doOnCloseCalled = true;
         },);
         completed = true;
