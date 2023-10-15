@@ -15,6 +15,7 @@ void main() async {
 
 void exitAfterTest() {
   // I'm not sure it's true but on exception I'll see that github runner failed with reaching timeout
+  // ignore: avoid_print
   print('All tests passed!');
   exit(0);
 }

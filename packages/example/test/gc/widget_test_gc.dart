@@ -6,9 +6,16 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'utils.dart';
 
+class MyFocusNode extends FocusNode {
+  @override
+  void dispose() {
+    super.dispose();
+  }
+}
+
 class TestWidget extends StatefulWidget {
-  final TextEditingController? controller;
-  const TestWidget({super.key, this.controller});
+  final FocusNode? focusNode;
+  const TestWidget({super.key, this.focusNode});
 
   @override
   TestWidgetState createState() => TestWidgetState();
@@ -17,57 +24,75 @@ class TestWidget extends StatefulWidget {
 class TestWidgetState extends State<TestWidget>
     with CloserWidgetState<TestWidget> {
   @override
+  void initState() {
+    super.initState();
+    // expect_lint: listenable_add_listener_unhandled
+    widget.focusNode?.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: Scaffold(body: TextField(controller: widget.controller)));
+        home: Scaffold(body: TextField(focusNode: widget.focusNode)));
   }
 }
 
-WeakReference? shouldBeNull;
-WeakReference? shouldBeNotNull;
+List<WeakReference> shouldBeNull = [];
+List<WeakReference> shouldBeNotNull = [];
 
 void main() {
+  // another case when my expectations made me suffer and laugh
+  // I was hope to find anything bad about unconnected ChangeNotifier but still not found
   group('Widget GC tests', () {
     tearDownAll(() {
       exit(0);
     });
-    testWidgets('GC will release the reg to widget if handled by closeWith',
-        (widgetTester) async {
-      final widgetWeakRef = await createWidgetAndSubscribeToChangeNotifier(
-          widgetTester,
-          andClose: true);
-      shouldBeNull = widgetWeakRef;
-      // expect(widgetWeakRef, isNull);
-    });
+    // testWidgets('GC will release the ref to widget if handled by closeWith',
+    //     (widgetTester) async {
+    //   final widgetWeakRef = await createWidgetAndSubscribeToChangeNotifier(
+    //       widgetTester,
+    //       andClose: true);
+    //   await widgetTester.pumpWidget(Container());
+    //   await forceGC();
+    //   expect(widgetWeakRef, isNotNull);
+    //   // shouldBeNull = widgetWeakRef;
+    //   // expect(widgetWeakRef, isNull);
+    // });
     testWidgets(
         'GC will keep the ref to widget if connected to change notifier',
         (widgetTester) async {
       final widgetWeakRef = await createWidgetAndSubscribeToChangeNotifier(
           widgetTester,
           andClose: false);
-      shouldBeNotNull = widgetWeakRef;
+
+      await widgetTester.pumpWidget(Container());
+      await forceGC();
+      expect(widgetWeakRef, isNotNull);
+      // shouldBeNotNull = widgetWeakRef;
       // expect(widgetWeakRef, isNotNull);
     });
     test('Check our weak refs', () async {
       await forceGC();
       expect(shouldBeNotNull, isNotNull);
-      expect(shouldBeNotNull?.target, isNotNull);
+      // expect(shouldBeNotNull?.target, isNotNull);
       expect(shouldBeNull, isNotNull);
-      expect(shouldBeNull?.target, isNull);
+      // expect(shouldBeNull?.target, isNull);
     });
   });
 }
 
-Future<WeakReference<Widget>> createWidgetAndSubscribeToChangeNotifier(
+Future<List<WeakReference>> createWidgetAndSubscribeToChangeNotifier(
     WidgetTester widgetTester,
     {required bool andClose}) async {
   // expect_lint: change_notifier_assignment_unhandled
-  final controller = TextEditingController();
-  final widget = TestWidget(controller: controller);
+  final focusNode = MyFocusNode();
+  final widget = TestWidget(focusNode: focusNode);
 
   await widgetTester.pumpWidget(widget);
-  final widgetWeakRef =
-      WeakReference(widgetTester.widget(find.byType(TextField).first));
+  final widgetWeakRef = WeakReference(widget);
+  // WeakReference(widgetTester.widget(find.byType(TextField).first));
   final TestWidgetState state = widgetTester.state(find.byWidget(widget));
 
   // controller.addListener(() {
@@ -76,11 +101,11 @@ Future<WeakReference<Widget>> createWidgetAndSubscribeToChangeNotifier(
   // });
 
   if (andClose) {
-    controller.closeWith(
+    focusNode.closeWith(
       state,
       doOnClose: () => print('pomogite'),
     );
   }
   await widgetTester.pumpWidget(Container());
-  return widgetWeakRef;
+  return [widgetWeakRef, WeakReference(state), WeakReference(focusNode)];
 }

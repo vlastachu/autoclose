@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:autoclose/autoclose.dart';
 import 'package:autoclose/test_utils/force_gc.dart';
-import 'package:test/test.dart';
 import 'package:autoclose/test_utils/test_closer.dart';
+import 'package:test/test.dart';
 
 StreamController streamController = StreamController.broadcast();
 Stream stream = streamController.stream;
 
 void updateStream() {
-  streamController.close();
+  unawaited(streamController.close());
   streamController = StreamController.broadcast();
   stream = streamController.stream;
 }
