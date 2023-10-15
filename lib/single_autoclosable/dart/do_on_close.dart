@@ -1,4 +1,4 @@
-import 'package:autoclose/autoclosable/autoclosable.dart';
+import 'package:autoclose/single_autoclosable/autoclosable.dart';
 
 class DoOnClose extends SingleAutoClosable<void Function()> {
   DoOnClose(void Function() f) : super(f, null);

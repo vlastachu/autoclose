@@ -1,6 +1,6 @@
-import 'package:autoclose/autoclosable/autoclosable.dart';
+import 'package:autoclose/single_autoclosable/autoclosable.dart';
 import 'package:autoclose/closer/closer.dart';
-import 'package:autoclose/generic_autoclosable/generic_autoclosable.dart';
+import 'package:autoclose/autoclosable/autoclosable.dart';
 import 'package:autoclose/subautoclosable/subautoclosable.dart';
 
 class GeneralCloser implements Closer {

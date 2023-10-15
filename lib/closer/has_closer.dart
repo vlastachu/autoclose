@@ -1,4 +1,4 @@
-import 'package:autoclose/autoclosable/dart/do_on_close.dart';
+import 'package:autoclose/single_autoclosable/dart/do_on_close.dart';
 
 import 'closer.dart';
 

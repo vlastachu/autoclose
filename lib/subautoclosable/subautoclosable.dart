@@ -1,4 +1,4 @@
-import 'package:autoclose/generic_autoclosable/generic_autoclosable.dart';
+import 'package:autoclose/autoclosable/autoclosable.dart';
 
 /// represents pair of entities which should handled together to close them.
 /// Good exaple is Listenable class from Flutter:

@@ -1,4 +1,4 @@
-import 'package:autoclose/autoclosable/autoclosable.dart';
+import 'package:autoclose/single_autoclosable/autoclosable.dart';
 import 'package:autoclose/subautoclosable/subautoclosable.dart';
 
 /// contains collection of SingleAutoClosable instances

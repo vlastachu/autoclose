@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:autoclose/autoclosable/autoclosable.dart';
+import 'package:autoclose/single_autoclosable/autoclosable.dart';
 import 'package:autoclose/closer/has_closer.dart';
 
 class ClosableTimer extends SingleAutoClosable<Timer> {

@@ -1,37 +1,31 @@
-import 'package:autoclose/generic_autoclosable/generic_autoclosable.dart';
-import 'package:meta/meta.dart';
+import 'dart:async';
 
 /// Represents entities which able to (and should be) close
-/// This class descendant designed for the simple case of a single entity
-@immutable
-abstract class SingleAutoClosable<T> extends AutoClosable {
-  /// The closable entity that this [SingleAutoClosable] instance is associated with.
-  final T closable;
-
-  @override
-  final void Function()? onClose;
-
-  /// Creates an [SingleAutoClosable] instance to manage the termination and cleanup
-  /// of a specified closable entity.
+/// 'Close' means different cases of termination: cancel, unsubscribe, dispose etc
+/// 
+/// See also:
+/// - [package:autoclose/closer/closer#Closer.addClosable]: Method to add closable entity to handle its 
+/// closing when [package:autoclose/closer/closer#Closer.onClose] called
+abstract class AutoClosable {
+  /// A callback function that can be provided to perform custom actions when
+  /// the associated entity is closed. This function is executed *after* [close]
+  /// is called. If [close] is Future, then it will be awaited and called onClose.
   ///
-  /// The [closable] parameter represents the entity that should be closed when
-  /// necessary, such as a stream subscription or a resource. The [onClose]
-  /// parameter is an optional callback function that can be used to define
-  /// custom actions to be performed when the [closable] entity is closed.
-  ///
-  /// Example usage:
+  /// Example:
   ///
   /// ```dart
   /// SingleAutoClosable(controller, () {
   ///   // Custom actions to be performed when the controller is closed.
   /// });
   /// ```
-  SingleAutoClosable(this.closable, this.onClose);
+  void Function()? get onClose;
 
-  @override
-  bool operator ==(dynamic other) =>
-      other is SingleAutoClosable && closable == other.closable;
+  /// Closes the current instance.
+  /// The returned future completes when the instance has been closed.
+  FutureOr<void> close();
 
-  @override
-  int get hashCode => closable.hashCode;
+  /// Whether the object is already closed.
+  /// `null` means you can't extract such information.
+  /// For example: Flutter's ChangeNotifier doesn't tell you if he was disposed
+  bool? get isClosed;
 }

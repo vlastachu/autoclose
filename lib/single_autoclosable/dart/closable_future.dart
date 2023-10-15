@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:async/async.dart';
-import 'package:autoclose/autoclosable/autoclosable.dart';
+import 'package:autoclose/single_autoclosable/autoclosable.dart';
 import 'package:autoclose/closer/closer.dart';
 import 'package:autoclose/closer/has_closer.dart';
 

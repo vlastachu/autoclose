@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:autoclose/autoclosable/dart/closable_subscription.dart';
+import 'package:autoclose/single_autoclosable/dart/closable_subscription.dart';
 import 'package:autoclose/test_utils/test_closer.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
