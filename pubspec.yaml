@@ -13,6 +13,8 @@ dev_dependencies:
   vm_service: ^11.9.0
   build_runner:
   mockito: ^5.4.0
+  total_lints:
 
 dependencies:
   async: ^2.11.0
+  meta: ^1.11.0
