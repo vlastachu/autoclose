@@ -2,9 +2,9 @@ import 'dart:async';
 
 /// Represents entities which able to (and should be) close
 /// 'Close' means different cases of termination: cancel, unsubscribe, dispose etc
-/// 
+///
 /// See also:
-/// - [package:autoclose/closer/closer#Closer.addClosable]: Method to add closable entity to handle its 
+/// - [package:autoclose/closer/closer#Closer.addClosable]: Method to add closable entity to handle its
 /// closing when [package:autoclose/closer/closer#Closer.onClose] called
 abstract class AutoClosable {
   /// A callback function that can be provided to perform custom actions when

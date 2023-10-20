@@ -36,6 +36,7 @@ void testClosableFuture() {
         await Future.delayed(const Duration(milliseconds: 1)).closeWith(closer);
         mocked.someMethod();
       }
+
       unawaited(future());
       closer.close();
       await Future.delayed(const Duration(milliseconds: 100));
@@ -63,11 +64,15 @@ void testClosableFuture() {
       bool completed = false;
       bool doOnCloseCalled = false;
       Future<void> future() async {
-        await Future.delayed(const Duration(milliseconds: 1)).closeWith(closer, onClose: () {
-          doOnCloseCalled = true;
-        },);
+        await Future.delayed(const Duration(milliseconds: 1)).closeWith(
+          closer,
+          onClose: () {
+            doOnCloseCalled = true;
+          },
+        );
         completed = true;
       }
+
       await future();
       expect(completed, isTrue);
       expect(doOnCloseCalled, isFalse);
@@ -80,11 +85,15 @@ void testClosableFuture() {
       bool completed = false;
       bool doOnCloseCalled = false;
       Future<void> future() async {
-        await Future.delayed(const Duration(milliseconds: 1)).closeWith(closer, onClose: () {
-          doOnCloseCalled = true;
-        },);
+        await Future.delayed(const Duration(milliseconds: 1)).closeWith(
+          closer,
+          onClose: () {
+            doOnCloseCalled = true;
+          },
+        );
         completed = true;
       }
+
       unawaited(future());
       expect(closer.close, returnsNormally);
       expect(completed, isFalse);

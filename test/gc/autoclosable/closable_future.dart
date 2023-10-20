@@ -26,7 +26,7 @@ class FutureTestCloser extends TestCloser {
   final outerFuture = Future.delayed(const Duration(hours: 1));
   final closer = FutureTestCloser();
   // need future there
-  // ignore: discarded_futures 
+  // ignore: discarded_futures
   final closerFuture = closer.init(outerFuture);
   if (andClose) {
     closer.close();

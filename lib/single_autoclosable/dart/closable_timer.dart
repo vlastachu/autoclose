@@ -23,7 +23,7 @@ extension TimerClose on Timer {
   /// Associates the [Timer] with the [Closer] context. You can
   /// provide an optional [onClose] callback function to define custom actions
   /// to be performed when the [Timer] is closed.
-  /// 
+  ///
   /// Example usage:
   ///
   /// ```dart

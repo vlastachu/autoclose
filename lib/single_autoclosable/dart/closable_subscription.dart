@@ -23,7 +23,7 @@ extension SubscriptionClose on StreamSubscription {
   /// Associates the [StreamSubscription] with the [Closer] context. You can
   /// provide an optional [onClose] callback function to define custom actions
   /// to be performed when the [StreamSubscription] is closed.
-  /// 
+  ///
   /// Example usage:
   ///
   /// ```dart

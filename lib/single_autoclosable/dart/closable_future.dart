@@ -33,7 +33,7 @@ extension FutureClose<T> on Future<T> {
   /// **Important note:** unlike other `closeWith` methods, this method has a return value.
   /// The [closeWith] method returns the original [Future] value, allowing you
   /// to continue using the [Future] after associating it with the [Closer].
-  /// 
+  ///
   /// Example usage:
   ///
   /// ```dart
@@ -46,7 +46,7 @@ extension FutureClose<T> on Future<T> {
   ///   processData(data);
   /// })
   /// ```
-  /// 
+  ///
   /// See also:
   /// [package:autoclose/test_gc/autoclosable/closable_future.dart#testClosableFuture]
   /// test case shows how it works (it is cancels from outside)

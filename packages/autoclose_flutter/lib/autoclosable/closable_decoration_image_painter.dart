@@ -16,7 +16,6 @@ class ClosableDecorationImagePainter
 
 extension DecorationImagePainterClose on DecorationImagePainter {
   void closeWith(HasCloser hasCloser, {void Function()? onClose}) {
-    hasCloser.closer
-        .addClosable(ClosableDecorationImagePainter(this, onClose));
+    hasCloser.closer.addClosable(ClosableDecorationImagePainter(this, onClose));
   }
 }

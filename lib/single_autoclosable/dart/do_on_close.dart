@@ -13,7 +13,6 @@ class _DoOnClose extends SingleAutoClosable<void Function()> {
   bool? get isClosed => null;
 }
 
-
 /// Adds custom actions to be executed when the associated `Closer` is closed.
 extension HasCloserDoOnCloseExt on HasCloser {
   /// Adds custom actions to be executed when the associated `Closer` is closed.

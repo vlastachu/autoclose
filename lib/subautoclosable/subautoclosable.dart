@@ -6,10 +6,10 @@ import 'package:meta/meta.dart';
 /// `listenable.addListener(listener);` has corresponding closing method `listenable.removeListener(listener);`
 /// With autoclosable lib it rewrites to `listenable.addListenerWithCloser(closer, listener);`
 @immutable
-abstract class SubAutoClosable<Closable, SubClosable>
-    extends AutoClosable {
+abstract class SubAutoClosable<Closable, SubClosable> extends AutoClosable {
   /// `listenable.addListener(listener);` -> `closable.addListener(subClosable);`
   final Closable closable;
+
   /// `listenable.addListener(listener);` -> `closable.addListener(subClosable);`
   final SubClosable subClosable;
   @override

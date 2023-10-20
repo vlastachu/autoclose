@@ -41,7 +41,6 @@ WeakReference<SubscriptionTestCloser> createAndInit({required bool andClose}) {
   return WeakReference(closer);
 }
 
-
 void testClosableSubscription() {
   group('ClosableSubscription', () {
     test('GC cleanes weak reference which not holded by anyone', () async {

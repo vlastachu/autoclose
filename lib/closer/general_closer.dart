@@ -7,8 +7,8 @@ import 'package:autoclose/subautoclosable/subautoclosable.dart';
 
 /// A class that implements the common [Closer] logic and provides the capability
 /// to manage collections of [SingleAutoClosable] and [SubAutoClosable] instances.
-/// 
-/// Other [Closer] should only implement `HasCloser` by this class instance, 
+///
+/// Other [Closer] should only implement `HasCloser` by this class instance,
 /// and call `onClose` when the time comes.
 ///
 /// It facilitates the controlled closure of these instances in accordance with
@@ -17,6 +17,7 @@ import 'package:autoclose/subautoclosable/subautoclosable.dart';
 class GeneralCloser implements Closer {
   /// [SingleAutoClosable] instances which already attached to their Closer's
   static final Set<SingleAutoClosable> attachedAutoclosables = {};
+
   /// [SubAutoClosable] instances which already attached to their Closer's
   static final Set<SubAutoClosable> attachedSubAutoclosables = {};
 
@@ -47,7 +48,7 @@ class GeneralCloser implements Closer {
     clearClosables(subClosables, attachedSubAutoclosables);
     clearClosables(closables, attachedAutoclosables);
   }
-  
+
   /// Clears and closes the provided collection of closables and removes them
   /// from the attached set. This method is used during the `onClose` operation.
   void clearClosables(

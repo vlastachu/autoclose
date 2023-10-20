@@ -6,6 +6,7 @@ import 'package:autoclose/subautoclosable/subautoclosable.dart';
 abstract class Closer {
   /// Add [SingleAutoClosable] instance to that [Closer] to handle its destruction when [onClose] called
   void addClosable(SingleAutoClosable closable);
+
   /// Add [SubAutoClosable] instance to that [Closer] to handle its destruction when [onClose] called
   void addSubClosable(SubAutoClosable closable);
 

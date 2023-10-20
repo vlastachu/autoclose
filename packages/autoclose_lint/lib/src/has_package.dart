@@ -12,6 +12,5 @@ class HasPackage {
   }
 
   bool sourceLibContainsInPubspec(CustomLintContext context) =>
-      context.pubspec.dependencies.keys
-          .contains(sourcePackage.pathSegments[0]);
+      context.pubspec.dependencies.keys.contains(sourcePackage.pathSegments[0]);
 }

@@ -5,7 +5,8 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 class ClosableConfig extends HasPackage {
   final String closableTargetUrl;
 
-  ClosableConfig(super.sourcePackage, {
+  ClosableConfig(
+    super.sourcePackage, {
     required this.closableTargetUrl,
   });
 
