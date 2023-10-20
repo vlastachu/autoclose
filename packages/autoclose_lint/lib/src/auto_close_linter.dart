@@ -1,64 +1,38 @@
-import 'package:autoclose_lint/src/package_config.dart';
 import 'package:autoclose_lint/src/closable/closable_assignment_lint.dart';
 import 'package:autoclose_lint/src/closable/closable_expression_lint.dart';
-import 'package:autoclose_lint/src/closable/closable_lint_config.dart';
-import 'package:autoclose_lint/src/closer/add_closer_mixin_assist.dart';
-import 'package:autoclose_lint/src/closer/closer_assist_config.dart';
+import 'package:autoclose_lint/src/closer/closers_handler.dart';
+import 'package:autoclose_lint/src/package_config.dart';
 import 'package:autoclose_lint/src/subclosable/subclosable_call_lint.dart';
-import 'package:autoclose_lint/src/subclosable/subclosable_lint_config.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 class AutoCloseLinter extends PluginBase {
-  final Map<String, PackageConfig> configsWithPackages;
+  final List<PackageConfig> configs;
 
-  AutoCloseLinter(this.configsWithPackages);
+  AutoCloseLinter(this.configs);
 
-  List<LintRule> _getClosableLints(ClosableLintPackageConfig config) => [
-        ClosableExpressionLint(config),
-        ClosableAssignmentLint(config),
-      ];
-
-  List<LintRule> _getSubclosableLints(SubclosableLintPackageConfig config) => [
-        SubclosableCallLint(config),
-      ];
-
-  List<Assist> _getCloserAssists(CloserAssistPackageConfig config) =>
-      [AddCloserMixinAssist(config)];
-
-  Iterable<LintRule> _getLintRules(CustomLintConfigs configs) sync* {
-    for (final MapEntry(key: package, value: packageConfig)
-        in configsWithPackages.entries) {
-      for (final config in packageConfig.closables) {
-        yield* _getClosableLints(ClosableLintPackageConfig(
-          closableSourceUrl: package,
-          config: config,
-        ));
-      }
-      for (final config in packageConfig.subClosables) {
-        yield* _getSubclosableLints(SubclosableLintPackageConfig(
-          closableSourceUrl: package,
-          config: config,
-        ));
-      }
-    }
-  }
+  late final ClosersHandler closersHandler = ClosersHandler(
+    closerConfigs: configs.expand((config) => config.closerConfigs).toList(),
+  );
 
   @override
-  List<LintRule> getLintRules(CustomLintConfigs configs) =>
-      _getLintRules(configs).toList();
-
-  Iterable<Assist> _getAssistRules() sync* {
-    for (final MapEntry(key: package, value: packageConfig)
-        in configsWithPackages.entries) {
-      for (final config in packageConfig.closers) {
-        yield* _getCloserAssists(CloserAssistPackageConfig(
-          closerSourceUrl: package,
-          config: config,
-        ));
-      }
-    }
-  }
+  List<LintRule> getLintRules(CustomLintConfigs configs) => this
+      .configs
+      .expand(
+        (config) => [
+          ...config.closableConfigs.expand(
+            (closableConfig) => [
+              ClosableExpressionLint(closableConfig, closersHandler),
+              ClosableAssignmentLint(closableConfig, closersHandler),
+            ],
+          ),
+          ...config.subClosableConfigs.map(
+            (subClosableConfig) =>
+                SubclosableCallLint(subClosableConfig, closersHandler),
+          ),
+        ],
+      )
+      .toList();
 
   @override
-  List<Assist> getAssists() => _getAssistRules().toList();
+  List<Assist> getAssists() => [];
 }

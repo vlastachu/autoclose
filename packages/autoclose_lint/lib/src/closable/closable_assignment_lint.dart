@@ -3,18 +3,22 @@ import 'package:analyzer/dart/element/type.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:analyzer/source/source_range.dart';
+import 'package:autoclose_lint/src/closer/closers_handler.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
-import 'closable_lint_config.dart';
+import 'closable_config.dart';
 
 class ClosableAssignmentLint extends DartLintRule {
-  final ClosableLintPackageConfig config;
-  ClosableAssignmentLint(this.config)
+  final ClosableConfig config;
+  final ClosersHandler closersHandler;
+  ClosableAssignmentLint(this.config, this.closersHandler)
       : super(
-            code: LintCode(
-                name: '${config.name}_assignment_unhandled',
-                problemMessage:
-                    '${config.userFriendlyName} assignment should be handled by `..closeWith(this)`'));
+          code: LintCode(
+            name: '${config.name}_assignment_unhandled',
+            problemMessage:
+                '${config.userFriendlyName} assignment should be handled by `..closeWith(this)`',
+          ),
+        );
 
   @override
   void run(
@@ -44,23 +48,26 @@ class ClosableAssignmentLint extends DartLintRule {
     // [1] ..some()
     // [2] ..closeWith(this)
     final cascadeChilds = expression.childEntities.skip(1);
-    return cascadeChilds.any((element) =>
-        element is MethodInvocation &&
-        element.isCascaded &&
-        element.methodName.name == 'closeWith');
+    return cascadeChilds.any(
+      (element) =>
+          element is MethodInvocation &&
+          element.isCascaded &&
+          element.methodName.name == 'closeWith',
+    );
   }
 
   @override
   List<Fix> getFixes() => [
-        _AddCascadeCallAssignmentFix(config),
-        _ReplaceAssignmentFix(config),
+        _AddCascadeCallAssignmentFix(config, closersHandler),
+        _ReplaceAssignmentFix(config, closersHandler),
       ];
 }
 
 class _AddCascadeCallAssignmentFix extends DartFix {
-  final ClosableLintPackageConfig config;
+  final ClosableConfig config;
+  final ClosersHandler closersHandler;
 
-  _AddCascadeCallAssignmentFix(this.config);
+  _AddCascadeCallAssignmentFix(this.config, this.closersHandler);
 
   @override
   void run(
@@ -79,19 +86,22 @@ class _AddCascadeCallAssignmentFix extends DartFix {
       );
 
       changeBuilder.addDartFileEdit((builder) {
-        if (!builder.importsLibrary(config.closableSourceLib)) {
-          builder.importLibrary(config.closableSourceLib);
-        }
+        config.tryImportSelfPackage(builder);
         builder.addSimpleInsertion(node.end, '..closeWith(this)');
+        closersHandler.addCloserMixin(
+          node.thisOrAncestorOfType<ClassDeclaration>(),
+          builder,
+        );
       });
     });
   }
 }
 
 class _ReplaceAssignmentFix extends DartFix {
-  final ClosableLintPackageConfig config;
+  final ClosableConfig config;
+  final ClosersHandler closersHandler;
 
-  _ReplaceAssignmentFix(this.config);
+  _ReplaceAssignmentFix(this.config, this.closersHandler);
 
   @override
   void run(
@@ -110,9 +120,7 @@ class _ReplaceAssignmentFix extends DartFix {
       );
 
       changeBuilder.addDartFileEdit((builder) {
-        if (!builder.importsLibrary(config.closableSourceLib)) {
-          builder.importLibrary(config.closableSourceLib);
-        }
+        config.tryImportSelfPackage(builder);
 
         if (node.variables.length != 1) {
           bool checkType(DartType? type) =>
@@ -121,7 +129,7 @@ class _ReplaceAssignmentFix extends DartFix {
           builder.addReplacement(SourceRange(node.offset, node.length),
               (builder) {
             for (final variable in node.variables) {
-              String? initializer = variable.initializer?.toSource();
+              final initializer = variable.initializer?.toSource();
               if (checkType(variable.initializer?.staticType)) {
                 builder.write('${initializer!}.closeWith(this);');
               } else {
@@ -144,8 +152,14 @@ class _ReplaceAssignmentFix extends DartFix {
 
           builder.addSimpleInsertion(initializer.end, '.closeWith(this)');
           builder.addDeletion(
-              SourceRange(node.offset, initializer.offset - node.offset));
+            SourceRange(node.offset, initializer.offset - node.offset),
+          );
         }
+
+        closersHandler.addCloserMixin(
+          node.thisOrAncestorOfType<ClassDeclaration>(),
+          builder,
+        );
       });
     });
   }

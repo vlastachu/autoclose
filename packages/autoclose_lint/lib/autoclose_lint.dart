@@ -1,75 +1,54 @@
-library autoclose_lint;
-
 import 'package:autoclose_lint/src/package_config.dart';
-import 'package:autoclose_lint/src/closable/closable_lint_config.dart';
-import 'package:autoclose_lint/src/closer/closer_assist_config.dart';
-import 'package:autoclose_lint/src/subclosable/subclosable_lint_config.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'src/auto_close_linter.dart';
 
-PluginBase createPlugin() => AutoCloseLinter({
-      'package:autoclose/autoclose.dart': PackageConfig(closables: [
-        ClosableLintConfig(
-          closableTargetUrl: 'dart:async#StreamSubscription',
-        ),
-        ClosableLintConfig(
-          closableTargetUrl: 'dart:async#Timer',
-        ),
-      ]),
-      'package:autoclose_flutter/autoclose_flutter.dart':
-          PackageConfig(closables: [
-        ClosableLintConfig(
-          closableTargetUrl:
-              'package:flutter/src/animation/animation_controller.dart#AnimationController',
-        ),
-        ClosableLintConfig(
-          closableTargetUrl:
-              'package:flutter/src/painting/decoration.dart#BoxPainter',
-        ),
-        ClosableLintConfig(
-          closableTargetUrl:
-              'package:flutter/src/foundation/change_notifier.dart#ChangeNotifier',
-        ),
-        ClosableLintConfig(
-          closableTargetUrl:
-              'package:flutter/src/painting/decoration_image.dart#DecorationImagePainter',
-        ),
-        ClosableLintConfig(
-          closableTargetUrl:
-              'package:flutter/src/gestures/recognizer.dart#GestureRecognizer',
-        ),
-        ClosableLintConfig(
-          closableTargetUrl:
-              'package:flutter/src/material/material.dart#InkFeature',
-        ),
-        ClosableLintConfig(
-          closableTargetUrl:
-              'package:flutter/src/widgets/scroll_activity.dart#ScrollDragController',
-        ),
-        ClosableLintConfig(
-          closableTargetUrl: 'package:flutter/src/scheduler/ticker.dart#Ticker',
-        ),
-      ], closers: [
-        CloserAssistConfig(
-          targetClassUrl: 'package:flutter/src/widgets/framework.dart#State',
-          mixinName: 'CloserWidgetState',
-        ),
-      ], subClosables: [
-        SubclosableLintConfig(
+PluginBase createPlugin() => AutoCloseLinter([
+      PackageConfig(
+        'package:autoclose/autoclose.dart',
+        closableTargetUrls: [
+          'dart:async#StreamSubscription',
+          'dart:async#Timer',
+        ],
+      ),
+      PackageConfig(
+        'package:autoclose_flutter/autoclose_flutter.dart',
+        closableTargetUrls: [
+          'package:flutter/src/animation/animation_controller.dart#AnimationController',
+          'package:flutter/src/painting/decoration.dart#BoxPainter',
+          'package:flutter/src/foundation/change_notifier.dart#ChangeNotifier',
+          'package:flutter/src/painting/decoration_image.dart#DecorationImagePainter',
+          'package:flutter/src/gestures/recognizer.dart#GestureRecognizer',
+          'package:flutter/src/material/material.dart#InkFeature',
+          'package:flutter/src/widgets/scroll_activity.dart#ScrollDragController',
+          'package:flutter/src/scheduler/ticker.dart#Ticker',
+        ],
+        closers: [
+          (
+            targetClassUrl: 'package:flutter/src/widgets/framework.dart#State',
+            mixinName: 'CloserWidgetState',
+          ),
+        ],
+        subClosables: [
+          (
             closableTargetUrl:
                 'package:flutter/src/foundation/change_notifier.dart#Listenable',
-            methodName: 'addListener'),
-        SubclosableLintConfig(
+            methodName: 'addListener'
+          ),
+          (
             closableTargetUrl:
                 'package:flutter/src/widgets/binding.dart#WidgetsBinding',
-            methodName: 'addObserver'),
-      ]),
-      'package:autoclose_bloc/autoclose_bloc.dart': PackageConfig(closables: [
-        ClosableLintConfig(
-            closableTargetUrl: 'package:bloc/src/bloc.dart#Closable'),
-      ], closers: [
-        CloserAssistConfig(
+            methodName: 'addObserver'
+          ),
+        ],
+      ),
+      PackageConfig(
+        'package:autoclose_bloc/autoclose_bloc.dart',
+        closableTargetUrls: ['package:bloc/src/bloc.dart#Closable'],
+        closers: [
+          (
             mixinName: 'CloserBloc',
-            targetClassUrl: 'package:bloc/src/bloc.dart#BlocBase'),
-      ]),
-    });
+            targetClassUrl: 'package:bloc/src/bloc.dart#BlocBase'
+          ),
+        ],
+      ),
+    ]);

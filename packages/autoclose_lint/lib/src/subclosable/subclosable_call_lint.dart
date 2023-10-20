@@ -2,17 +2,21 @@ import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:analyzer/source/source_range.dart';
-import 'package:autoclose_lint/src/subclosable/subclosable_lint_config.dart';
+import 'package:autoclose_lint/src/closer/closers_handler.dart';
+import 'package:autoclose_lint/src/subclosable/subclosable_config.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 class SubclosableCallLint extends DartLintRule {
-  final SubclosableLintPackageConfig config;
-  SubclosableCallLint(this.config)
+  final SubclosableConfig config;
+  final ClosersHandler closersHandler;
+  SubclosableCallLint(this.config, this.closersHandler)
       : super(
-            code: LintCode(
-                name: '${config.name}_${config.methodSnakeCase}_unhandled',
-                problemMessage:
-                    '${config.methodName} should be replaced with ${config.methodName}WithCloser'));
+          code: LintCode(
+            name: '${config.name}_${config.methodSnakeCase}_unhandled',
+            problemMessage:
+                '${config.methodName} should be replaced with ${config.methodName}WithCloser',
+          ),
+        );
 
   @override
   void run(
@@ -36,13 +40,14 @@ class SubclosableCallLint extends DartLintRule {
   }
 
   @override
-  List<Fix> getFixes() => [_ReplaceWithSafeCall(config)];
+  List<Fix> getFixes() => [_ReplaceWithSafeCall(config, closersHandler)];
 }
 
 class _ReplaceWithSafeCall extends DartFix {
-  final SubclosableLintPackageConfig config;
+  final SubclosableConfig config;
+  final ClosersHandler closersHandler;
 
-  _ReplaceWithSafeCall(this.config);
+  _ReplaceWithSafeCall(this.config, this.closersHandler);
 
   @override
   void run(
@@ -61,16 +66,18 @@ class _ReplaceWithSafeCall extends DartFix {
       );
 
       changeBuilder.addDartFileEdit((builder) {
-        if (!builder.importsLibrary(config.closableSourceLib)) {
-          builder.importLibrary(config.closableSourceLib);
-        }
+        config.tryImportSelfPackage(builder);
         builder.addSimpleReplacement(
-            SourceRange(
-                node.methodName.end,
-                node.argumentList.leftParenthesis.offset +
-                    1 -
-                    node.methodName.end),
-            'WithCloser(this, ');
+          SourceRange(
+            node.methodName.end,
+            node.argumentList.leftParenthesis.offset + 1 - node.methodName.end,
+          ),
+          'WithCloser(this, ',
+        );
+        closersHandler.addCloserMixin(
+          node.thisOrAncestorOfType<ClassDeclaration>(),
+          builder,
+        );
       });
     });
   }

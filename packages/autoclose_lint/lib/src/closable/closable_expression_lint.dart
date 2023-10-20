@@ -1,17 +1,21 @@
+import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
+import 'package:autoclose_lint/src/closer/closers_handler.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
-import 'closable_lint_config.dart';
+import 'closable_config.dart';
 
 class ClosableExpressionLint extends DartLintRule {
-  final ClosableLintPackageConfig config;
-  ClosableExpressionLint(this.config)
+  final ClosableConfig config;
+  final ClosersHandler closersHandler;
+  ClosableExpressionLint(this.config, this.closersHandler)
       : super(
-            code: LintCode(
-                name: '${config.name}_expression_unhandled',
-                problemMessage:
-                    '${config.userFriendlyName} should be handled'));
+          code: LintCode(
+            name: '${config.name}_expression_unhandled',
+            problemMessage: '${config.userFriendlyName} should be handled',
+          ),
+        );
 
   @override
   void run(
@@ -32,13 +36,14 @@ class ClosableExpressionLint extends DartLintRule {
   }
 
   @override
-  List<Fix> getFixes() => [_HandleExpressionFix(config)];
+  List<Fix> getFixes() => [_HandleExpressionFix(config, closersHandler)];
 }
 
 class _HandleExpressionFix extends DartFix {
-  final ClosableLintPackageConfig config;
+  final ClosableConfig config;
+  final ClosersHandler closersHandler;
 
-  _HandleExpressionFix(this.config);
+  _HandleExpressionFix(this.config, this.closersHandler);
 
   @override
   void run(
@@ -57,10 +62,13 @@ class _HandleExpressionFix extends DartFix {
       );
 
       changeBuilder.addDartFileEdit((builder) {
-        if (!builder.importsLibrary(config.closableSourceLib)) {
-          builder.importLibrary(config.closableSourceLib);
-        }
+        config.tryImportSelfPackage(builder);
+
         builder.addSimpleInsertion(node.expression.end, '.closeWith(this)');
+        closersHandler.addCloserMixin(
+          node.thisOrAncestorOfType<ClassDeclaration>(),
+          builder,
+        );
       });
     });
   }
