@@ -12,8 +12,8 @@ class ClosableExpressionLint extends DartLintRule {
   ClosableExpressionLint(this.config, this.closersHandler)
       : super(
           code: LintCode(
-            name: '${config.name}_expression_unhandled',
-            problemMessage: '${config.userFriendlyName} should be handled',
+            name: '${config.name}_expression_unclosed',
+            problemMessage: '${config.userFriendlyName} should be closed by `.closeWith(this)`',
           ),
         );
 

@@ -14,9 +14,9 @@ class ClosableAssignmentLint extends DartLintRule {
   ClosableAssignmentLint(this.config, this.closersHandler)
       : super(
           code: LintCode(
-            name: '${config.name}_assignment_unhandled',
+            name: '${config.name}_assignment_unclosed',
             problemMessage:
-                '${config.userFriendlyName} assignment should be handled by `..closeWith(this)`',
+                '${config.userFriendlyName} assignment should be closed by `..closeWith(this)`',
           ),
         );
 
@@ -29,11 +29,11 @@ class ClosableAssignmentLint extends DartLintRule {
     if (!config.sourceLibContainsInPubspec(context)) {
       return;
     }
-    context.registry.addVariableDeclaration((node) {
-      final expressionType = node.initializer?.staticType;
+    context.registry.addAssignmentExpression((node) {
+      final expressionType = node.rightHandSide.staticType;
       if (expressionType != null &&
           config.closableTypeChecker.isAssignableFromType(expressionType) &&
-          !containsCloseInMethodCascade(node.initializer!)) {
+          !containsCloseInMethodCascade(node.rightHandSide)) {
         reporter.reportErrorForNode(code, node);
       }
     });
@@ -77,7 +77,7 @@ class _AddCascadeCallAssignmentFix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) {
-    context.registry.addVariableDeclaration((node) {
+    context.registry.addAssignmentExpression((node) {
       if (!analysisError.sourceRange.intersects(node.sourceRange)) return;
 
       final changeBuilder = reporter.createChangeBuilder(
@@ -111,7 +111,7 @@ class _ReplaceAssignmentFix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) {
-    context.registry.addVariableDeclarationList((node) {
+    context.registry.addAssignmentExpression((node) {
       if (!analysisError.sourceRange.intersects(node.sourceRange)) return;
 
       final changeBuilder = reporter.createChangeBuilder(
@@ -122,39 +122,39 @@ class _ReplaceAssignmentFix extends DartFix {
       changeBuilder.addDartFileEdit((builder) {
         config.tryImportSelfPackage(builder);
 
-        if (node.variables.length != 1) {
-          bool checkType(DartType? type) =>
-              type != null &&
-              config.closableTypeChecker.isAssignableFromType(type);
-          builder.addReplacement(SourceRange(node.offset, node.length),
-              (builder) {
-            for (final variable in node.variables) {
-              final initializer = variable.initializer?.toSource();
-              if (checkType(variable.initializer?.staticType)) {
-                builder.write('${initializer!}.closeWith(this);');
-              } else {
-                builder.writeLocalVariableDeclaration(
-                  variable.name.lexeme,
-                  isConst: node.isConst,
-                  isFinal: node.isFinal,
-                  type: node.type?.type,
-                  initializerWriter: initializer == null
-                      ? null
-                      : () => builder.write(initializer),
-                );
-              }
-              builder.write('\n');
-            }
-          });
-        } else {
-          final initializer = node.variables[0].initializer;
-          if (initializer == null) return;
+        // if (node.variables.length != 1) {
+        //   bool checkType(DartType? type) =>
+        //       type != null &&
+        //       config.closableTypeChecker.isAssignableFromType(type);
+        //   builder.addReplacement(SourceRange(node.offset, node.length),
+        //       (builder) {
+        //     for (final variable in node.variables) {
+        //       final initializer = variable.initializer?.toSource();
+        //       if (checkType(variable.initializer?.staticType)) {
+        //         builder.write('${initializer!}.closeWith(this);');
+        //       } else {
+        //         builder.writeLocalVariableDeclaration(
+        //           variable.name.lexeme,
+        //           isConst: node.isConst,
+        //           isFinal: node.isFinal,
+        //           type: node.type?.type,
+        //           initializerWriter: initializer == null
+        //               ? null
+        //               : () => builder.write(initializer),
+        //         );
+        //       }
+        //       builder.write('\n');
+        //     }
+        //   });
+        // } else {
+        // final initializer = node.variables[0].initializer;
+        // if (initializer == null) return;
 
-          builder.addSimpleInsertion(initializer.end, '.closeWith(this)');
-          builder.addDeletion(
-            SourceRange(node.offset, initializer.offset - node.offset),
-          );
-        }
+        builder.addSimpleInsertion(node.end, '.closeWith(this)');
+        builder.addDeletion(
+          SourceRange(node.offset, node.rightHandSide.offset - node.offset),
+        );
+        // }
 
         closersHandler.addCloserMixin(
           node.thisOrAncestorOfType<ClassDeclaration>(),

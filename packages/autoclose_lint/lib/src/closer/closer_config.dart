@@ -3,19 +3,18 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 class CloserConfig extends HasPackage {
   final String targetClassUrl;
-  final String mixinName;
+  final String mixinUrl;
 
   CloserConfig(
     super.sourcePackage, {
-    required this.mixinName,
+    required this.mixinUrl,
     required this.targetClassUrl,
   });
 
-  late final closerMixinTypeChecker =
-      TypeChecker.fromUrl('$sourcePackage#$mixinName');
-
-  String get assistMessage => 'Add corresponding Closer mixin';
+  late final closerMixinTypeChecker = TypeChecker.fromUrl(mixinUrl);
 
   late final TypeChecker targetClassTypeChecker =
       TypeChecker.fromUrl(targetClassUrl);
+
+  late final mixinName = mixinUrl.split('#')[1];
 }

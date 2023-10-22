@@ -6,7 +6,7 @@ class PackageConfig {
   final String package;
   final List<String> closableTargetUrls;
   final List<({String closableTargetUrl, String methodName})> subClosables;
-  final List<({String targetClassUrl, String mixinName})> closers;
+  final List<({String targetClassUrl, String mixinUrl})> closers;
 
   PackageConfig(
     this.package, {
@@ -41,7 +41,7 @@ class PackageConfig {
         (closer) => CloserConfig(
           packageUri,
           targetClassUrl: closer.targetClassUrl,
-          mixinName: closer.mixinName,
+          mixinUrl: closer.mixinUrl,
         ),
       )
       .toList();

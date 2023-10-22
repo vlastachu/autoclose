@@ -12,7 +12,7 @@ class SubclosableCallLint extends DartLintRule {
   SubclosableCallLint(this.config, this.closersHandler)
       : super(
           code: LintCode(
-            name: '${config.name}_${config.methodSnakeCase}_unhandled',
+            name: '${config.name}_${config.methodSnakeCase}_unclosed',
             problemMessage:
                 '${config.methodName} should be replaced with ${config.methodName}WithCloser',
           ),
