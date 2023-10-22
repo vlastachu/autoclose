@@ -11,7 +11,9 @@ initialization, and subscription cancellation. Now we need a combined initializa
 block + add a mixin to the class (and at the same time remember what the corresponding mixin is called). 
 The advantages are no longer so obvious. Let me try to clear your doubts.
 
-![Power of lints](assets/lints.gif "Power of lints")
+
+https://github.com/vlastachu/autoclose/assets/527307/dfb9c12a-6367-4ad0-bbfb-640049d0418d
+
 
 ## Getting started
 
