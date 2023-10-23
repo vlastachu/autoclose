@@ -1,5 +1,4 @@
 import 'package:analyzer/dart/ast/ast.dart';
-import 'package:analyzer/dart/element/type.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:analyzer/source/source_range.dart';
@@ -8,36 +7,6 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'closable_config.dart';
 
-class ClosableAssignmentLint extends DartLintRule {
-  final ClosableConfig config;
-  final ClosersHandler closersHandler;
-  ClosableAssignmentLint(this.config, this.closersHandler)
-      : super(
-          code: LintCode(
-            name: '${config.name}_assignment_unclosed',
-            problemMessage:
-                '${config.userFriendlyName} assignment should be closed by `..closeWith(this)`',
-          ),
-        );
-
-  @override
-  void run(
-    CustomLintResolver resolver,
-    ErrorReporter reporter,
-    CustomLintContext context,
-  ) {
-    if (!config.sourceLibContainsInPubspec(context)) {
-      return;
-    }
-    context.registry.addAssignmentExpression((node) {
-      final expressionType = node.rightHandSide.staticType;
-      if (expressionType != null &&
-          config.closableTypeChecker.isAssignableFromType(expressionType) &&
-          !containsCloseInMethodCascade(node.rightHandSide)) {
-        reporter.reportErrorForNode(code, node);
-      }
-    });
-  }
 
   /// Checks whether user already invokes `closeWith` call in method cascade
   bool containsCloseInMethodCascade(Expression expression) {
@@ -56,18 +25,66 @@ class ClosableAssignmentLint extends DartLintRule {
     );
   }
 
+abstract class AssignmentExpressionLookup<SourceElement extends AstNode> {
+  Expression? getExpressionElement(SourceElement sourceElement);
+
+  void addSourceElementListener(
+    LintRuleNodeRegistry registry,
+    void Function(SourceElement node) listener,
+  );
+}
+
+abstract class ClosableAssignmentLint<SourceElement extends AstNode>
+    extends DartLintRule {
+  final ClosableConfig config;
+  final ClosersHandler closersHandler;
+  final AssignmentExpressionLookup<SourceElement> lookup;
+  ClosableAssignmentLint(
+      this.config, this.closersHandler, this.lookup, String name)
+      : super(
+          code: LintCode(
+            name: '${config.name}_${name}_unclosed',
+            problemMessage:
+                '${config.userFriendlyName} assignment should be closed by `..closeWith(this)`',
+          ),
+        );
+
+  @override
+  void run(
+    CustomLintResolver resolver,
+    ErrorReporter reporter,
+    CustomLintContext context,
+  ) {
+    if (!config.sourceLibContainsInPubspec(context)) {
+      return;
+    }
+    lookup.addSourceElementListener(context.registry, (node) {
+      final expression = lookup.getExpressionElement(node);
+      if (expression == null) return;
+      final expressionType = expression.staticType;
+      if (expressionType != null &&
+          config.closableTypeChecker.isAssignableFromType(expressionType) &&
+          !containsCloseInMethodCascade(expression)) {
+        reporter.reportErrorForNode(code, node);
+      }
+    });
+  }
+
+
   @override
   List<Fix> getFixes() => [
-        _AddCascadeCallAssignmentFix(config, closersHandler),
-        _ReplaceAssignmentFix(config, closersHandler),
+        _AddCascadeCallAssignmentFix(config, closersHandler, lookup),
+        _ReplaceAssignmentFix(config, closersHandler, lookup),
       ];
 }
 
-class _AddCascadeCallAssignmentFix extends DartFix {
+class _AddCascadeCallAssignmentFix<SourceElement extends AstNode>
+    extends DartFix {
   final ClosableConfig config;
   final ClosersHandler closersHandler;
+  final AssignmentExpressionLookup<SourceElement> lookup;
 
-  _AddCascadeCallAssignmentFix(this.config, this.closersHandler);
+  _AddCascadeCallAssignmentFix(this.config, this.closersHandler, this.lookup);
 
   @override
   void run(
@@ -77,7 +94,7 @@ class _AddCascadeCallAssignmentFix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) {
-    context.registry.addAssignmentExpression((node) {
+    lookup.addSourceElementListener(context.registry, (node) {
       if (!analysisError.sourceRange.intersects(node.sourceRange)) return;
 
       final changeBuilder = reporter.createChangeBuilder(
@@ -97,11 +114,12 @@ class _AddCascadeCallAssignmentFix extends DartFix {
   }
 }
 
-class _ReplaceAssignmentFix extends DartFix {
+class _ReplaceAssignmentFix<SourceElement extends AstNode> extends DartFix {
   final ClosableConfig config;
   final ClosersHandler closersHandler;
+  final AssignmentExpressionLookup<SourceElement> lookup;
 
-  _ReplaceAssignmentFix(this.config, this.closersHandler);
+  _ReplaceAssignmentFix(this.config, this.closersHandler, this.lookup);
 
   @override
   void run(
@@ -111,8 +129,10 @@ class _ReplaceAssignmentFix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) {
-    context.registry.addAssignmentExpression((node) {
+    lookup.addSourceElementListener(context.registry, (node) {
       if (!analysisError.sourceRange.intersects(node.sourceRange)) return;
+      final expression = lookup.getExpressionElement(node);
+      if (expression == null) return;
 
       final changeBuilder = reporter.createChangeBuilder(
         message: 'replace with `.closeWith(this)`',
@@ -121,40 +141,10 @@ class _ReplaceAssignmentFix extends DartFix {
 
       changeBuilder.addDartFileEdit((builder) {
         config.tryImportSelfPackage(builder);
-
-        // if (node.variables.length != 1) {
-        //   bool checkType(DartType? type) =>
-        //       type != null &&
-        //       config.closableTypeChecker.isAssignableFromType(type);
-        //   builder.addReplacement(SourceRange(node.offset, node.length),
-        //       (builder) {
-        //     for (final variable in node.variables) {
-        //       final initializer = variable.initializer?.toSource();
-        //       if (checkType(variable.initializer?.staticType)) {
-        //         builder.write('${initializer!}.closeWith(this);');
-        //       } else {
-        //         builder.writeLocalVariableDeclaration(
-        //           variable.name.lexeme,
-        //           isConst: node.isConst,
-        //           isFinal: node.isFinal,
-        //           type: node.type?.type,
-        //           initializerWriter: initializer == null
-        //               ? null
-        //               : () => builder.write(initializer),
-        //         );
-        //       }
-        //       builder.write('\n');
-        //     }
-        //   });
-        // } else {
-        // final initializer = node.variables[0].initializer;
-        // if (initializer == null) return;
-
         builder.addSimpleInsertion(node.end, '.closeWith(this)');
         builder.addDeletion(
-          SourceRange(node.offset, node.rightHandSide.offset - node.offset),
+          SourceRange(node.offset, expression.offset - node.offset),
         );
-        // }
 
         closersHandler.addCloserMixin(
           node.thisOrAncestorOfType<ClassDeclaration>(),

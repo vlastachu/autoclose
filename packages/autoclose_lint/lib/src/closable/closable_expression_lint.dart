@@ -27,6 +27,8 @@ class ClosableExpressionLint extends DartLintRule {
       return;
     }
     context.registry.addExpressionStatement((node) {
+      // will be handled by other lint
+      if (node.expression is AssignmentExpression) return; 
       final expressionType = node.expression.staticType;
       if (expressionType != null &&
           config.closableTypeChecker.isAssignableFromType(expressionType)) {
