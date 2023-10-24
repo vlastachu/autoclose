@@ -1,10 +1,10 @@
-import 'dart:async';
+import 'dart:io';
 
+import 'package:autoclose_flutter/autoclose_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
 
-void main() {
-  runApp(const TestWidget());
-}
+import 'utils.dart';
 
 class StatelessTest extends StatelessWidget {
   const StatelessTest({super.key});
@@ -22,13 +22,12 @@ class TestWidget extends StatefulWidget {
   TestWidgetState createState() => TestWidgetState();
 }
 
-class TestWidgetState extends State<TestWidget> {
+class TestWidgetState extends State<TestWidget>
+    with CloserWidgetState<TestWidget> {
   bool isClean = false;
-  late StreamSubscription streamSubscription;
 
   @override
   void initState() {
-    const Stream.empty().listen((event) {});
     super.initState();
   }
 
@@ -58,4 +57,30 @@ class TestWidgetState extends State<TestWidget> {
                     ],
                   )));
   }
+}
+
+void main() {
+  testWidgets('Test if views disappear when isClean is true',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(const TestWidget());
+
+    // final textField = find.byType(TextField);
+    // final valueListenableBuilder = find.byType(ValueListenableBuilder);
+    // final statelessTest = find.byType(StatelessTest);
+    final cleanButton = find.text('clean');
+
+    // Verify that the widgets are initially present
+    // expect(textField, findsOneWidget);
+    // expect(valueListenableBuilder, findsOneWidget);
+    // expect(statelessTest, findsOneWidget);
+
+    await tester.tap(cleanButton);
+    await tester.pumpAndSettle();
+
+    // Verify that the widgets have disappeared
+    // expect(textField, findsNothing);
+    // expect(valueListenableBuilder, findsNothing);
+    // expect(statelessTest, findsNothing);
+    expect(cleanButton, findsNothing);
+  });
 }

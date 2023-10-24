@@ -19,7 +19,7 @@ class TestWidgetState extends State<TestWidget>
   @override
   void initState() {
     super.initState();
-    // expect_lint: listenable_add_listener_unhandled
+    // expect_lint: listenable_add_listener_unclosed
     widget.focusNode?.addListener(() {
       setState(() {});
     });
@@ -79,7 +79,7 @@ void main() {
 Future<List<WeakReference>> createWidgetAndSubscribeToChangeNotifier(
     WidgetTester widgetTester,
     {required bool andClose}) async {
-  // expect_lint: change_notifier_assignment_unhandled
+  // expect_lint: change_notifier_variable_declaration_list_unclosed
   final focusNode = FocusNode();
   final widget = TestWidget(focusNode: focusNode);
 
