@@ -22,25 +22,27 @@ jobs:
       - run: dart run --observe test/gc/autoclose_test_gc.dart
   flutter-test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./packages/autoclose_flutter
     timeout-minutes: 2
     steps:
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-      - name: test autoclose-flutter
-        working-directory: ./packages/autoclose_flutter
-        run: flutter pub get
-        run: flutter test
+      - run: flutter pub get
+      - run: flutter test
   lint-test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./packages/autoclose_lint/test
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v3
       - uses: dart-lang/setup-dart@v1
-      - name: test autoclose-lint
-        working-directory: ./packages/autoclose_lint/test
-        run: dart pub get
-        run: dart run custom_lint .
+      - run: dart pub get
+      - run: dart run custom_lint .
 
 
