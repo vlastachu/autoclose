@@ -30,15 +30,15 @@ class _ExampleState extends State<Example> {
     final a = 1, b = counterStream.listen((n) {});
 
     // expect_lint: timer_variable_declaration_list_unclosed
-    final a1 = Timer.periodic(Duration.zero, (timer) { });
-    
+    final a1 = Timer.periodic(Duration.zero, (timer) {});
+
     // expect_lint: stream_subscription_expression_unclosed
     counterStream.listen((n) {
       controller.text = '$n';
     });
 
     // expect_lint: listenable_add_listener_unclosed
-    focusNode?.addListener(() { });
+    focusNode?.addListener(() {});
   }
 
   @override

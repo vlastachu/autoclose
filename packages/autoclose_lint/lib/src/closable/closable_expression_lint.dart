@@ -13,7 +13,8 @@ class ClosableExpressionLint extends DartLintRule {
       : super(
           code: LintCode(
             name: '${config.name}_expression_unclosed',
-            problemMessage: '${config.userFriendlyName} should be closed by `.closeWith(this)`',
+            problemMessage:
+                '${config.userFriendlyName} should be closed by `.closeWith(this)`',
           ),
         );
 
@@ -28,7 +29,7 @@ class ClosableExpressionLint extends DartLintRule {
     }
     context.registry.addExpressionStatement((node) {
       // will be handled by other lint
-      if (node.expression is AssignmentExpression) return; 
+      if (node.expression is AssignmentExpression) return;
       final expressionType = node.expression.staticType;
       if (expressionType != null &&
           config.closableTypeChecker.isAssignableFromType(expressionType)) {

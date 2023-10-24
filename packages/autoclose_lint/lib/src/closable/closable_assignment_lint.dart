@@ -7,23 +7,22 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'closable_config.dart';
 
-
-  /// Checks whether user already invokes `closeWith` call in method cascade
-  bool containsCloseInMethodCascade(Expression expression) {
-    // for example we have such expression:
-    // stream.listen((event) {})..some()..closeWith(this)
-    // expression.childEntities will contain:
-    // [0] stream.listen((event) {}) // skip this child as it may contain inner closable expressions
-    // [1] ..some()
-    // [2] ..closeWith(this)
-    final cascadeChilds = expression.childEntities.skip(1);
-    return cascadeChilds.any(
-      (element) =>
-          element is MethodInvocation &&
-          element.isCascaded &&
-          element.methodName.name == 'closeWith',
-    );
-  }
+/// Checks whether user already invokes `closeWith` call in method cascade
+bool containsCloseInMethodCascade(Expression expression) {
+  // for example we have such expression:
+  // stream.listen((event) {})..some()..closeWith(this)
+  // expression.childEntities will contain:
+  // [0] stream.listen((event) {}) // skip this child as it may contain inner closable expressions
+  // [1] ..some()
+  // [2] ..closeWith(this)
+  final cascadeChilds = expression.childEntities.skip(1);
+  return cascadeChilds.any(
+    (element) =>
+        element is MethodInvocation &&
+        element.isCascaded &&
+        element.methodName.name == 'closeWith',
+  );
+}
 
 abstract class AssignmentExpressionLookup<SourceElement extends AstNode> {
   Expression? getExpressionElement(SourceElement sourceElement);
@@ -69,7 +68,6 @@ abstract class ClosableAssignmentLint<SourceElement extends AstNode>
       }
     });
   }
-
 
   @override
   List<Fix> getFixes() => [

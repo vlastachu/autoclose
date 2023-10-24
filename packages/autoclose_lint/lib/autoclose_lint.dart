@@ -25,7 +25,8 @@ PluginBase createPlugin() => AutoCloseLinter([
         closers: [
           (
             targetClassUrl: 'package:flutter/src/widgets/framework.dart#State',
-            mixinUrl: 'package:autoclose_flutter/closer/closer_widget_state.dart#CloserWidgetState',
+            mixinUrl:
+                'package:autoclose_flutter/closer/closer_widget_state.dart#CloserWidgetState',
           ),
         ],
         subClosables: [
@@ -46,7 +47,8 @@ PluginBase createPlugin() => AutoCloseLinter([
         closableTargetUrls: ['package:bloc/src/bloc.dart#Closable'],
         closers: [
           (
-            mixinUrl: 'package:autoclose_bloc/closer/closer_bloc.dart#CloserBloc',
+            mixinUrl:
+                'package:autoclose_bloc/closer/closer_bloc.dart#CloserBloc',
             targetClassUrl: 'package:bloc/src/bloc.dart#BlocBase'
           ),
         ],
