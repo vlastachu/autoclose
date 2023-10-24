@@ -13,6 +13,10 @@ class TestWidgetState extends State<TestWidget>
     with CloserWidgetState<TestWidget> {
   @override
   Widget build(BuildContext context) {
-    return TextField(controller: widget.controller);
+    return MaterialApp(
+      home: Scaffold(
+        body: TextField(controller: widget.controller),
+      ),
+    );
   }
 }
