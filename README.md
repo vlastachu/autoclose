@@ -12,7 +12,11 @@ block + add a mixin to the class (and at the same time remember what the corresp
 The advantages are no longer so obvious. Let me try to clear your doubts.
 
 
-https://github.com/vlastachu/autoclose/assets/527307/dfb9c12a-6367-4ad0-bbfb-640049d0418d
+
+
+https://github.com/vlastachu/autoclose/assets/527307/8fca84b2-4ade-4193-9d36-21501a276115
+
+
 
 
 ## Installation
