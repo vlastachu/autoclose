@@ -17,7 +17,17 @@ The advantages are no longer so obvious. Let me try to clear your doubts.
 https://github.com/vlastachu/autoclose/assets/527307/8fca84b2-4ade-4193-9d36-21501a276115
 
 
+Let's pay attention to what has changed after applying the first fix:
 
+![First lint zoomed](assets/lints-zoom.png "First lint zoomed")
+
+- added corresponding import
+- added mixin which handles closable things when widget calls own `dispose` method
+- added `closeWith` call which tells to Closer to handle that supscription
+
+At this point, I hope you have formed an understanding that you definitely need this package and are ready to move on to the [How to install](https://github.com/vlastachu/autoclose/tree/main#installation) chapter. If not, then let me try to explain why it's cool.
+
+## Why this is actually cool
 
 ## Installation
 
