@@ -1,5 +1,14 @@
 AutoClose — is a package designed to reduce the entire boilerplate from things that can be `.dispose()`d, `.close()`d or whatever!
 
+- [What exactly does this package do?](#what-exactly-does-this-package-do-)
+- [Why this is actually cool](#why-this-is-actually-cool)
+  * [꙳ Reducing boilerplait](#--reducing-boilerplait)
+- [Installation](#installation)
+  * [AutoClose_Lints installation](#autoclose-lints-installation)
+- [Usage](#usage)
+- [Extendability](#extendability)
+- [Further works](#further-works)
+
 ## What exactly does this package do?
 
 ![It turns this into that](assets/it-turns-this-into-that.png "It turns this into that")
