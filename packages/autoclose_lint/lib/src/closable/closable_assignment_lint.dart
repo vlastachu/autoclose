@@ -39,8 +39,11 @@ abstract class ClosableAssignmentLint<SourceElement extends AstNode>
   final ClosersHandler closersHandler;
   final AssignmentExpressionLookup<SourceElement> lookup;
   ClosableAssignmentLint(
-      this.config, this.closersHandler, this.lookup, String name)
-      : super(
+    this.config,
+    this.closersHandler,
+    this.lookup,
+    String name,
+  ) : super(
           code: LintCode(
             name: '${config.name}_${name}_unclosed',
             problemMessage:
