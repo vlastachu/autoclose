@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:autoclose/autoclose.dart';
-import 'package:autoclose/test_utils/force_gc.dart';
-import 'package:autoclose/test_utils/test_closer.dart';
 import 'package:test/test.dart';
 
+import '../../test_utils/force_gc.dart';
+import '../../test_utils/test_closer.dart';
 import '../utils/indirectional_weak_ref_close.dart';
 
 StreamController streamController = StreamController.broadcast();

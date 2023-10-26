@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'dart:isolate';
-// ignore: depend_on_referenced_packages
 import 'package:vm_service/vm_service_io.dart';
 
 /// used to run gc's garbage collection

@@ -1,7 +1,8 @@
 import 'package:autoclose/single_autoclosable/dart/closable_future.dart';
-import 'package:autoclose/test_utils/force_gc.dart';
-import 'package:autoclose/test_utils/test_closer.dart';
 import 'package:test/test.dart';
+
+import '../../test_utils/force_gc.dart';
+import '../../test_utils/test_closer.dart';
 
 class FutureTestCloser extends TestCloser {
   FutureTestCloser();

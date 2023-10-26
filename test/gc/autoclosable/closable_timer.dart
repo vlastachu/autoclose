@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:autoclose/single_autoclosable/dart/closable_timer.dart';
-import 'package:autoclose/test_utils/force_gc.dart';
-import 'package:autoclose/test_utils/test_closer.dart';
 import 'package:test/test.dart';
 
+import '../../test_utils/force_gc.dart';
+import '../../test_utils/test_closer.dart';
 import '../utils/indirectional_weak_ref_close.dart';
 
 final List<WeakReference> refsThatShouldBeCleared = [];
