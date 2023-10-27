@@ -4,9 +4,9 @@ AutoClose — is a package designed to reduce the entire boilerplate from things
 
 ## Table of Contents
 
-- [What exactly does this package do?](#what-exactly-does-this-package-do-)
+- [What exactly does this package do?](#what-exactly-does-this-package-do)
 - [Why this is actually cool](#why-this-is-actually-cool)
-  * [꙳ Reducing boilerplaitу](#--reducing-boilerplait)
+  * [꙳ Reducing boilerplaite](#-reducing-boilerplaite)
 - [Installation](#installation)
   * [AutoClose Lints installation](#autoclose-lints-installation)
 - [Usage](#usage)
