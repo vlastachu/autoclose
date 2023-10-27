@@ -24,10 +24,9 @@ initialization, and subscription cancellation. Now we need a combined initializa
 block + add a mixin to the class (and at the same time remember what the corresponding mixin is called). 
 The advantages are no longer so obvious. Let me try to clear your doubts.
 
-<details> 
-  <summary> Gif demonstrates quick fix </summary>
-   ![lints.gif](https://github.com/vlastachu/autoclose/raw/main/assets/lints.gif "lints.gif")
-</details>
+
+![lints.gif](https://github.com/vlastachu/autoclose/raw/main/assets/lints.gif "lints.gif")
+
 
 
 What happens after applying the first fix:
