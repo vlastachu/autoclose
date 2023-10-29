@@ -85,7 +85,7 @@ If you'd like to see support for other state managers, please let me know.
 AutoClose Lints were created using the custom_lint package. To install them, use the following commands:
 
 ```bash
-flutter pub add dev:autoclose_lints dev:custom_lint
+flutter pub add dev:autoclose_lint dev:custom_lint
 ```
 
 Add the following lines to your analysis_options.yaml:
