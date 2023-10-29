@@ -1,6 +1,5 @@
 import 'package:autoclose_lint/src/closable/closable_assignment_expression_lint.dart';
 import 'package:autoclose_lint/src/closable/closable_expression_lint.dart';
-import 'package:autoclose_lint/src/closable/closable_variable_declaration_lint.dart';
 import 'package:autoclose_lint/src/closable/closable_variable_declaration_list_lint.dart';
 import 'package:autoclose_lint/src/closer/closers_handler.dart';
 import 'package:autoclose_lint/src/package_config.dart';

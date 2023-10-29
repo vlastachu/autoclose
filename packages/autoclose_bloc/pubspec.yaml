@@ -5,15 +5,15 @@ repository: https://github.com/vlastachu/autoclose
 issue_tracker: https://github.com/vlastachu/autoclose/issues
 
 environment:
-  sdk: '>=2.19.3 <3.0.0'
+  sdk: '>=3.0.0 <3.3.0'
 
 dependencies:
   bloc: ^8.1.2
-  autoclose:
+  autoclose: ^1.0.0
 
-dependency_overrides:
-  autoclose:
-    path: ../..
+# dependency_overrides:
+#   autoclose:
+#     path: ../..
 
 dev_dependencies:
   lints: ^2.0.0
