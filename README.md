@@ -7,6 +7,7 @@ AutoClose — is a package designed to reduce the entire boilerplate from things
 - [What exactly does this package do?](#what-exactly-does-this-package-do)
 - [Why this is actually cool](#why-this-is-actually-cool)
   * [꙳ Reducing boilerplaite](#-reducing-boilerplaite)
+- [Known alternatives](#known-alternatives)
 - [Installation](#installation)
   * [AutoClose Lints installation](#autoclose-lints-installation)
 - [Usage](#usage)
@@ -61,6 +62,14 @@ The problem with boilerplate code goes beyond simply reducing code volume. It ma
 3. During code refactoring or copy-pasting, the boilerplate problem becomes evident. You have to decide whether to carefully review and adjust each piece of code or dismiss it as unimportant. This approach can be problematic if there's a unique 1% case with an unusual flow in the subscription.
 
 AutoClose consolidates the subscription flow into one place, making it simpler to read and manage. It also provides the `// ignore:` comment as a signal to handle exceptional cases with care.
+
+## Known alternatives 
+
+[flutter_hooks](https://pub.dev/packages/flutter_hooks) is able to cover the same cases as AutoClose. 
+
+The difference is that the flutter_hooks forces you to write widget in own style. While AutoClose applicable for an existing application written in traditional way.
+
+Additional difference is that the AutoClose can handle Bloc (and possibly other state managers) lifecycle, when hooks is designed only for widgets.
 
 ## Installation
 
