@@ -11,9 +11,9 @@ dependencies:
   bloc: ^8.1.2
   autoclose: ^1.0.1
 
-dependency_overrides:
-  autoclose:
-    path: ../..
+# dependency_overrides:
+#   autoclose:
+#     path: ../..
 
 dev_dependencies:
   lints: ^2.0.0
