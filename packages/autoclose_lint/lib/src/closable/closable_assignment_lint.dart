@@ -2,6 +2,7 @@ import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:analyzer/source/source_range.dart';
+import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dart';
 import 'package:autoclose_lint/src/closer/closers_handler.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
@@ -31,6 +32,8 @@ abstract class AssignmentExpressionLookup<SourceElement extends AstNode> {
     LintRuleNodeRegistry registry,
     void Function(SourceElement node) listener,
   );
+
+  void useBuilderAfterFixes(DartFileEditBuilder builder, SourceElement node) {}
 }
 
 abstract class ClosableAssignmentLint<SourceElement extends AstNode>
@@ -110,6 +113,7 @@ class _AddCascadeCallAssignmentFix<SourceElement extends AstNode>
           node.thisOrAncestorOfType<ClassDeclaration>(),
           builder,
         );
+        lookup.useBuilderAfterFixes(builder, node);
       });
     });
   }
@@ -151,6 +155,7 @@ class _ReplaceAssignmentFix<SourceElement extends AstNode> extends DartFix {
           node.thisOrAncestorOfType<ClassDeclaration>(),
           builder,
         );
+        lookup.useBuilderAfterFixes(builder, node);
       });
     });
   }

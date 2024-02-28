@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:autoclose/autoclose.dart';
+import 'package:autoclose_flutter/autoclose_flutter.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -22,14 +24,27 @@ class TestWidget extends StatefulWidget {
   TestWidgetState createState() => TestWidgetState();
 }
 
-class TestWidgetState extends State<TestWidget> {
+class TestWidgetState extends State<TestWidget> with CloserWidgetState {
   bool isClean = false;
   late StreamSubscription streamSubscription;
 
   @override
   void initState() {
-    const Stream.empty().listen((event) {});
+    const Stream.empty().listen((event) {}).closeWith(this);
     super.initState();
+  }
+
+  Future<int> longOperation() async {
+    print('longOperation start');
+    await Future.delayed(const Duration(seconds: 10));
+    print('longOperation complete');
+    return 3;
+  }
+
+  Future<int> longOperationHandler() async {
+    print('${await longOperation()}...');
+    setState(() {});
+    return 4;
   }
 
   @override
