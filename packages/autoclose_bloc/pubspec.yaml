@@ -1,6 +1,6 @@
 name: autoclose_bloc
 description: autoclose_bloc is a package providing AutoClose functionality for the Bloc
-version: 1.0.1
+version: 1.0.2
 repository: https://github.com/vlastachu/autoclose
 issue_tracker: https://github.com/vlastachu/autoclose/issues
 
