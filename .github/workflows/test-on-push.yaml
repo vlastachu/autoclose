@@ -31,6 +31,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
+          flutter-version: 3.22.0
       - run: flutter pub get
       - run: flutter test
   lint-test:
@@ -44,6 +45,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
+          flutter-version: 3.22.0
       - run: flutter pub get
       - run: dart run custom_lint .
 
