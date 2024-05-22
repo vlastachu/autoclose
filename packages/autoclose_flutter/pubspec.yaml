@@ -14,10 +14,6 @@ dependencies:
   autoclose: ^1.0.1
   vm_service: ^13.0.0
 
-# dependency_overrides:
-#   autoclose:
-#     path: ../..
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
