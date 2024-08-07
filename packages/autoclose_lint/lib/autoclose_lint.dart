@@ -29,7 +29,8 @@ PluginBase createPlugin() => AutoCloseLinter([
                 'package:autoclose_flutter/closer/closer_widget_state.dart#CloserWidgetState',
           ),
           (
-            targetClassUrl: 'package:flutter/src/foundation/change_notifier.dart#ChangeNotifier',
+            targetClassUrl:
+                'package:flutter/src/foundation/change_notifier.dart#ChangeNotifier',
             mixinUrl:
                 'package:autoclose_flutter/closer/closer_change_notifier.dart#CloserChangeNotifier',
           ),

@@ -1,6 +1,6 @@
 name: autoclose_flutter
 description: autoclose_flutter is a package providing AutoClose functionality for the Flutter platform
-version: 1.0.2
+version: 1.0.3
 repository: https://github.com/vlastachu/autoclose
 issue_tracker: https://github.com/vlastachu/autoclose/issues
 

@@ -1,6 +1,6 @@
 name: autoclose_lint
 description: AutoClose_Lint is a must have feature of the AutoClose package
-version: 1.0.2
+version: 1.0.3
 repository: https://github.com/vlastachu/autoclose
 issue_tracker: https://github.com/vlastachu/autoclose/issues
 

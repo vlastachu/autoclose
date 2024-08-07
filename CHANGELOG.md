@@ -1,3 +1,8 @@
+## 1.0.3
+
+- Add CloserChangeNotifier which provides Closer context in ChangeNotifier and ValueNotofier class.
+
+
 ## 1.0.2
 
 - Support Flutter 3.22.0
