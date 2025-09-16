@@ -87,6 +87,8 @@ If you're using the Bloc state management library, install the corresponding pac
 flutter pub add autoclose_bloc
 ```
 
+> **Starting from version 1.0.4, if you use autoclose_bloc, you do not need to add autoclose or autoclose_flutter separately — all required dependencies are included.**
+
 If you'd like to see support for other state managers, please let me know.
 
 ### AutoClose Lints installation
