@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:autoclose/autoclose.dart';
+import 'package:autoclose_flutter/autoclose_flutter.dart';
 import 'package:bloc/bloc.dart';
 
 class ClosableBloc extends SingleAutoClosable<Closable> {

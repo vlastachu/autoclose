@@ -1,4 +1,8 @@
-include: package:flutter_lints/flutter.yaml
+include: package:total_lints/package.yaml
 
-# Additional information about this file can be found at
-# https://dart.dev/guides/language/analysis-options
+linter:
+  rules:
+    prefer_relative_imports: false
+    lines_longer_than_80_chars: false
+    public_member_api_docs: false
+    diagnostic_describe_all_properties: false

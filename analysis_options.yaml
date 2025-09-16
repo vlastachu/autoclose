@@ -1,9 +1,5 @@
 include: package:total_lints/package.yaml
 
-analyzer:
-  enable-experiment:
-    - records
-
 linter:
   rules:
     prefer_relative_imports: false

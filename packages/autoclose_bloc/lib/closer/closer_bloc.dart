@@ -1,4 +1,4 @@
-import 'package:autoclose/autoclose.dart';
+import 'package:autoclose_flutter/autoclose_flutter.dart';
 import 'package:bloc/bloc.dart';
 
 mixin CloserBloc<T> on BlocBase<T> implements HasCloser {

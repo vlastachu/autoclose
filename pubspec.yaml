@@ -1,11 +1,11 @@
 name: autoclose
 description: is a package designed to reduce the entire boilerplate from things that can be `.dispose()`d, `.close()`d or whatever!
-version: 1.0.3
+version: 1.0.4
 repository: https://github.com/vlastachu/autoclose
 issue_tracker: https://github.com/vlastachu/autoclose/issues
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: '>=3.2.0 <4.0.0'
 
 dev_dependencies:
   build_runner: ^2.4.6

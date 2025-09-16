@@ -48,13 +48,15 @@ class _MyHomePageState extends State<MyHomePage> with CloserWidgetState {
             SegmentedButton(
               segments: const [
                 ButtonSegment(
-                    value: Page.scrollListenerPage,
-                    icon: Icon(Icons.cake_outlined),
-                    label: Text('scroll listener')),
+                  value: Page.scrollListenerPage,
+                  icon: Icon(Icons.cake_outlined),
+                  label: Text('scroll listener'),
+                ),
                 ButtonSegment(
-                    value: Page.justPage,
-                    icon: Icon(Icons.breakfast_dining),
-                    label: Text('just page'))
+                  value: Page.justPage,
+                  icon: Icon(Icons.breakfast_dining),
+                  label: Text('just page'),
+                ),
               ],
               selected: {page},
               onSelectionChanged: (p0) => setState(() {
@@ -74,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> with CloserWidgetState {
                 controller: _controller,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    title: Text("Index: $index"),
+                    title: Text('Index: $index'),
                     visualDensity: VisualDensity.comfortable,
                   );
                 },
@@ -112,8 +114,10 @@ class _ScrollListenerState extends State<ScrollListener>
 
   @override
   void initState() {
-    widget.scrollController.addListenerWithCloser(this,
-        () => setState(() => offset = widget.scrollController.offset.round()));
+    widget.scrollController.addListenerWithCloser(
+      this,
+      () => setState(() => offset = widget.scrollController.offset.round()),
+    );
 
     super.initState();
   }

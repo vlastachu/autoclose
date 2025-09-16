@@ -23,6 +23,7 @@ abstract class SubAutoClosable<Closable, SubClosable> extends AutoClosable {
   SubAutoClosable(this.closable, this.subClosable, this.onClose);
 
   @override
+  // ignore: non_nullable_equals_parameter
   bool operator ==(dynamic other) =>
       other is SubAutoClosable &&
       closable == other.closable &&

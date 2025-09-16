@@ -12,12 +12,16 @@ import 'change_notifier.mocks.dart';
 void main() {
   group('ChangeNotifier (SingleAutoClosable)', () {
     test(
-        'ChangeNotifier disposed twice throws an exception',
-        () => expect(() {
-              final controller = TextEditingController();
-              controller.dispose();
-              controller.dispose();
-            }, throwsFlutterError));
+      'ChangeNotifier disposed twice throws an exception',
+      () => expect(
+        () {
+          final controller = TextEditingController();
+          controller.dispose();
+          controller.dispose();
+        },
+        throwsFlutterError,
+      ),
+    );
 
     testWidgets('but gracefully handled by `closeWith`', (widgetTester) async {
       const widget = TestWidget();
@@ -28,10 +32,13 @@ void main() {
       controller.closeWith(state);
       controller.closeWith(state);
 
-      expect(() async {
-        // Dispose the widget
-        await widgetTester.pumpWidget(Container());
-      }, returnsNormally);
+      expect(
+        () async {
+          // Dispose the widget
+          await widgetTester.pumpWidget(Container());
+        },
+        returnsNormally,
+      );
     });
     testWidgets('we can see on mock that dispose called once',
         (widgetTester) async {
@@ -57,9 +64,12 @@ void main() {
 
       // Dispose the widget
       await widgetTester.pumpWidget(Container());
-      expect(() async {
-        controller.dispose();
-      }, throwsFlutterError);
+      expect(
+        () async {
+          controller.dispose();
+        },
+        throwsFlutterError,
+      );
     });
   });
 }

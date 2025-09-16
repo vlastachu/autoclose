@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class TestModel extends ValueNotifier<int> with CloserChangeNotifier {
-  TestModel(super.value);
+  TestModel(super._value);
 
   Future<void> runNotification() async {
     await Future.delayed(Duration.zero);

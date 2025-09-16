@@ -13,7 +13,7 @@ Future<void> forceGC() async {
     return;
   }
 
-  final isolateId = Service.getIsolateID(Isolate.current)!;
+  final isolateId = Service.getIsolateId(Isolate.current)!;
   final vmService = await vmServiceConnectUri(_toWebSocket(serverUri));
   await vmService.getAllocationProfile(isolateId, gc: true);
 }

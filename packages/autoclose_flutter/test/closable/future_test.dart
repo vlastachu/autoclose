@@ -1,11 +1,14 @@
 // ignore_for_file: avoid_print
 
+import 'dart:async';
+
 import 'package:autoclose/autoclose.dart';
 import 'package:autoclose_flutter/closer/closer_widget_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class TestWidget extends StatefulWidget {
+  // ignore: diagnostic_describe_all_properties
   final TextEditingController? controller;
   const TestWidget({super.key, this.controller});
 
@@ -18,7 +21,7 @@ class TestWidgetState extends State<TestWidget>
   @override
   void initState() {
     super.initState();
-    longCall().closeWith(this);
+    unawaited(longCall().closeWith(this));
   }
 
   Future<void> longCall() async {
@@ -47,7 +50,7 @@ class TestWidgetState extends State<TestWidget>
 void main() {
   group('Future', () {
     testWidgets('but gracefully handled by `closeWith`', (widgetTester) async {
-      // TODO test shows future closable behavior but doesn't actually test anything
+      // TODO(vlastachu): test shows future closable behavior but doesn't actually test anything
       await widgetTester.runAsync(() async {
         const widget = TestWidget();
         await widgetTester.pumpWidget(widget);

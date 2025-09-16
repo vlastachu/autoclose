@@ -21,6 +21,7 @@ abstract class SingleAutoClosable<T> extends AutoClosable {
   SingleAutoClosable(this.closable, this.onClose);
 
   @override
+  // ignore: non_nullable_equals_parameter
   bool operator ==(dynamic other) =>
       other is SingleAutoClosable && closable == other.closable;
 
