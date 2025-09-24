@@ -8,7 +8,7 @@ environment:
   sdk: '>=3.2.0 <4.0.0'
 
 dependencies:
-  autoclose: 1.0.4
+  autoclose: ^1.0.4
   dio: '>=5.5.0 <6.0.0'
 
 dev_dependencies:
