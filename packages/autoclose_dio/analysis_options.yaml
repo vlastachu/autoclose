@@ -1,0 +1,8 @@
+include: package:total_lints/package.yaml
+
+linter:
+  rules:
+    prefer_relative_imports: false
+    lines_longer_than_80_chars: false
+    public_member_api_docs: false
+    diagnostic_describe_all_properties: false

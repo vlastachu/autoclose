@@ -1,0 +1,17 @@
+name: autoclose_dio
+description: Extension for autoclose package which helps to cancel requests on parrent's context closes
+version: 1.0.4
+repository: https://github.com/vlastachu/autoclose
+issue_tracker: https://github.com/vlastachu/autoclose/issues
+
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+
+dependencies:
+  autoclose: 1.0.4
+  dio: '>=5.5.0 <6.0.0'
+
+dev_dependencies:
+  lints: ^3.0.0
+  test: ^1.24.0
+  total_lints:

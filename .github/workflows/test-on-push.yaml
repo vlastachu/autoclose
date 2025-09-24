@@ -20,6 +20,18 @@ jobs:
       # - run: dart analyze 
       - run: dart test
       - run: dart run --observe test/gc/autoclose_test_gc.dart
+  dart-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./packages/autoclose_dio
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dart-lang/setup-dart@v1
+      - run: dart pub get
+      - run: dart format --output=none --set-exit-if-changed .
+      - run: dart test
   flutter-test:
     runs-on: ubuntu-latest
     defaults:
