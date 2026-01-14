@@ -6,10 +6,13 @@ issue_tracker: https://github.com/vlastachu/autoclose/issues
 
 environment:
   sdk: '>=3.2.0 <4.0.0'
+  flutter: ">=3.10.0"
 
 dependencies:
   bloc: '>=8.0.0 <10.0.0'
   autoclose_flutter: 1.0.4
+  flutter:
+    sdk: flutter
 
 dev_dependencies:
   lints: ^2.0.0

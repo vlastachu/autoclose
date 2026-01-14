@@ -8,23 +8,18 @@ This library provides functionality of [AutoClose package](https://pub.dev/packa
 ## Getting started
 
 ```bash
-# required
-flutter pub add autoclose 
-# it is POSSIBLE to use without Flutter. Can't imagine why
-flutter pub add autoclose_flutter
+flutter pub add autoclose_bloc
 # optional, but I insist on giving it a chance
 flutter pub add autoclose_lint
-# this lib
-flutter pub add autoclose_bloc
 ```
 
 ## Usage
 
 ```dart
 class ProfileEditingFormBloc extends Bloc<ProfileEditingFormEvent, ProfileEditingFormState> 
-  // add AutoCloseBloc mixin to your bloc either manualy
+  // add CloserBloc mixin to your bloc either manualy
   // or by closer bloc assist (press `⌘.` in VS Code or `Alt+Enter` in IntelliJ Idea)
-  with AutoCloseBloc {
+  with CloserBloc {
 
   final UserRepository userRepository;
 
@@ -37,7 +32,7 @@ class ProfileEditingFormBloc extends Bloc<ProfileEditingFormEvent, ProfileEditin
     userRepository.userAuthTokenStream.listen((token) {
       add(ProfileFetchRenewedUserData(token: token));
     })
-    // AutoCloseBloc mixin provides `closeWith` functionality for your Bloc classes
+    // CloserBloc mixin provides `closeWith` functionality for your Bloc classes
     .closeWith(this);
   }
 }
