@@ -1,6 +1,6 @@
 name: autoclose_bloc
 description: autoclose_bloc is a package providing AutoClose functionality for the Bloc
-version: 1.0.4
+version: 1.0.5
 repository: https://github.com/vlastachu/autoclose
 issue_tracker: https://github.com/vlastachu/autoclose/issues
 
@@ -10,7 +10,7 @@ environment:
 
 dependencies:
   bloc: '>=8.0.0 <10.0.0'
-  autoclose_flutter: 1.0.4
+  autoclose_flutter: 1.0.5
   flutter:
     sdk: flutter
 
