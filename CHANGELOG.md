@@ -1,3 +1,8 @@
+## 1.0.5
+
+- Add GetX support
+- Fixed Bloc example
+
 ## 1.0.4
 
 - The autoclose_bloc package now depends on autoclose_flutter, which re-exports all APIs from autoclose. You only need to add autoclose_bloc to access all features from both autoclose_bloc and autoclose_flutter (and autoclose).

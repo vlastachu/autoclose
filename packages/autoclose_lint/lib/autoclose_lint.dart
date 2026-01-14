@@ -59,4 +59,15 @@ PluginBase createPlugin() => AutoCloseLinter([
           ),
         ],
       ),
+      PackageConfig(
+        'package:autoclose_getx/autoclose_getx.dart',
+        closableTargetUrls: [],
+        closers: [
+          (
+            mixinUrl:
+                'package:autoclose_getx/closer/closer_getx.dart#CloserGetx',
+            targetClassUrl: 'package:get/get.dart#DisposableInterface'
+          ),
+        ],
+      ),
     ]);

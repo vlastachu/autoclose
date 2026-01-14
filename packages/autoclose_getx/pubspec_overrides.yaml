@@ -1,0 +1,7 @@
+dependency_overrides:
+  autoclose:
+    path: ../..
+  autoclose_flutter:
+    path: ../autoclose_flutter
+  autoclose_lint:
+    path: ../autoclose_lint
